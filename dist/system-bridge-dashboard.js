@@ -58,23 +58,23 @@ var e = globalThis, t = e.ShadowRoot && (e.ShadyCSS === void 0 || e.ShadyCSS.nat
 		}
 		return n;
 	}
-}, m = (e, t) => !l(e, t), se = {
+}, se = (e, t) => !l(e, t), ce = {
 	attribute: !0,
 	type: String,
 	converter: p,
 	reflect: !1,
 	useDefault: !1,
-	hasChanged: m
+	hasChanged: se
 };
 Symbol.metadata ??= Symbol("metadata"), d.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-var h = class extends HTMLElement {
+var m = class extends HTMLElement {
 	static addInitializer(e) {
 		this._$Ei(), (this.l ??= []).push(e);
 	}
 	static get observedAttributes() {
 		return this.finalize(), this._$Eh && [...this._$Eh.keys()];
 	}
-	static createProperty(e, t = se) {
+	static createProperty(e, t = ce) {
 		if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
 			let n = Symbol(), r = this.getPropertyDescriptor(e, n, t);
 			r !== void 0 && u(this.prototype, e, r);
@@ -100,7 +100,7 @@ var h = class extends HTMLElement {
 		};
 	}
 	static getPropertyOptions(e) {
-		return this.elementProperties.get(e) ?? se;
+		return this.elementProperties.get(e) ?? ce;
 	}
 	static _$Ei() {
 		if (this.hasOwnProperty(f("elementProperties"))) return;
@@ -187,7 +187,7 @@ var h = class extends HTMLElement {
 	requestUpdate(e, t, n, r = !1, i) {
 		if (e !== void 0) {
 			let a = this.constructor;
-			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? m)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
+			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? se)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
 			this.C(e, t, n);
 		}
 		!1 === this.isUpdatePending && (this._$ES = this._$EP());
@@ -251,16 +251,16 @@ var h = class extends HTMLElement {
 	updated(e) {}
 	firstUpdated(e) {}
 };
-h.elementStyles = [], h.shadowRootOptions = { mode: "open" }, h[f("elementProperties")] = /* @__PURE__ */ new Map(), h[f("finalized")] = /* @__PURE__ */ new Map(), oe?.({ ReactiveElement: h }), (d.reactiveElementVersions ??= []).push("2.1.2");
+m.elementStyles = [], m.shadowRootOptions = { mode: "open" }, m[f("elementProperties")] = /* @__PURE__ */ new Map(), m[f("finalized")] = /* @__PURE__ */ new Map(), oe?.({ ReactiveElement: m }), (d.reactiveElementVersions ??= []).push("2.1.2");
 // ../../../node_modules/lit-html/lit-html.js
-var ce = globalThis, le = (e) => e, g = ce.trustedTypes, ue = g ? g.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, de = "$lit$", _ = `lit$${Math.random().toFixed(9).slice(2)}$`, fe = "?" + _, pe = `<${fe}>`, v = document, y = () => v.createComment(""), b = (e) => e === null || typeof e != "object" && typeof e != "function", me = Array.isArray, he = (e) => me(e) || typeof e?.[Symbol.iterator] == "function", ge = "[ 	\n\f\r]", x = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, _e = /-->/g, ve = />/g, S = RegExp(`>|${ge}(?:([^\\s"'>=/]+)(${ge}*=${ge}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ye = /'/g, be = /"/g, xe = /^(?:script|style|textarea|title)$/i, Se = ((e) => (t, ...n) => ({
+var le = globalThis, ue = (e) => e, h = le.trustedTypes, de = h ? h.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, fe = "$lit$", g = `lit$${Math.random().toFixed(9).slice(2)}$`, pe = "?" + g, me = `<${pe}>`, _ = document, v = () => _.createComment(""), y = (e) => e === null || typeof e != "object" && typeof e != "function", he = Array.isArray, ge = (e) => he(e) || typeof e?.[Symbol.iterator] == "function", b = "[ 	\n\f\r]", x = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, _e = /-->/g, ve = />/g, S = RegExp(`>|${b}(?:([^\\s"'>=/]+)(${b}*=${b}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ye = /'/g, be = /"/g, xe = /^(?:script|style|textarea|title)$/i, Se = ((e) => (t, ...n) => ({
 	_$litType$: e,
 	strings: t,
 	values: n
-}))(1), C = Symbol.for("lit-noChange"), w = Symbol.for("lit-nothing"), Ce = /* @__PURE__ */ new WeakMap(), T = v.createTreeWalker(v, 129);
+}))(1), C = Symbol.for("lit-noChange"), w = Symbol.for("lit-nothing"), Ce = /* @__PURE__ */ new WeakMap(), T = _.createTreeWalker(_, 129);
 function we(e, t) {
-	if (!me(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
-	return ue === void 0 ? t : ue.createHTML(t);
+	if (!he(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
+	return de === void 0 ? t : de.createHTML(t);
 }
 var Te = (e, t) => {
 	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = x;
@@ -268,10 +268,10 @@ var Te = (e, t) => {
 		let n = e[t], s, c, l = -1, u = 0;
 		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === x ? c[1] === "!--" ? o = _e : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = S) : (xe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = S) : o = ve : o === S ? c[0] === ">" ? (o = i ?? x, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? S : c[3] === "\"" ? be : ye) : o === be || o === ye ? o = S : o === _e || o === ve ? o = x : (o = S, i = void 0);
 		let ee = o === S && e[t + 1].startsWith("/>") ? " " : "";
-		a += o === x ? n + pe : l >= 0 ? (r.push(s), n.slice(0, l) + de + n.slice(l) + _ + ee) : n + _ + (l === -2 ? t : ee);
+		a += o === x ? n + me : l >= 0 ? (r.push(s), n.slice(0, l) + fe + n.slice(l) + g + ee) : n + g + (l === -2 ? t : ee);
 	}
 	return [we(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
-}, E = class e {
+}, Ee = class e {
 	constructor({ strings: t, _$litType$: n }, r) {
 		let i;
 		this.parts = [];
@@ -282,57 +282,57 @@ var Te = (e, t) => {
 		}
 		for (; (i = T.nextNode()) !== null && c.length < s;) {
 			if (i.nodeType === 1) {
-				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(de)) {
-					let t = u[o++], n = i.getAttribute(e).split(_), r = /([.?@])?(.*)/.exec(t);
+				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(fe)) {
+					let t = u[o++], n = i.getAttribute(e).split(g), r = /([.?@])?(.*)/.exec(t);
 					c.push({
 						type: 1,
 						index: a,
 						name: r[2],
 						strings: n,
-						ctor: r[1] === "." ? Oe : r[1] === "?" ? ke : r[1] === "@" ? Ae : O
+						ctor: r[1] === "." ? ke : r[1] === "?" ? Ae : r[1] === "@" ? je : D
 					}), i.removeAttribute(e);
-				} else e.startsWith(_) && (c.push({
+				} else e.startsWith(g) && (c.push({
 					type: 6,
 					index: a
 				}), i.removeAttribute(e));
 				if (xe.test(i.tagName)) {
-					let e = i.textContent.split(_), t = e.length - 1;
+					let e = i.textContent.split(g), t = e.length - 1;
 					if (t > 0) {
-						i.textContent = g ? g.emptyScript : "";
-						for (let n = 0; n < t; n++) i.append(e[n], y()), T.nextNode(), c.push({
+						i.textContent = h ? h.emptyScript : "";
+						for (let n = 0; n < t; n++) i.append(e[n], v()), T.nextNode(), c.push({
 							type: 2,
 							index: ++a
 						});
-						i.append(e[t], y());
+						i.append(e[t], v());
 					}
 				}
 			} else if (i.nodeType === 8) {
-				if (i.data === fe) c.push({
+				if (i.data === pe) c.push({
 					type: 2,
 					index: a
 				});
 				else {
 					let e = -1;
-					for (; (e = i.data.indexOf(_, e + 1)) !== -1;) c.push({
+					for (; (e = i.data.indexOf(g, e + 1)) !== -1;) c.push({
 						type: 7,
 						index: a
-					}), e += _.length - 1;
+					}), e += g.length - 1;
 				}
 			}
 			a++;
 		}
 	}
 	static createElement(e, t) {
-		let n = v.createElement("template");
+		let n = _.createElement("template");
 		return n.innerHTML = e, n;
 	}
 };
-function D(e, t, n = e, r) {
+function E(e, t, n = e, r) {
 	if (t === C) return t;
-	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = b(t) ? void 0 : t._$litDirective$;
-	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = D(e, i._$AS(e, t.values), i, r)), t;
+	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = y(t) ? void 0 : t._$litDirective$;
+	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = E(e, i._$AS(e, t.values), i, r)), t;
 }
-var Ee = class {
+var De = class {
 	constructor(e, t) {
 		this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
 	}
@@ -343,23 +343,23 @@ var Ee = class {
 		return this._$AM._$AU;
 	}
 	u(e) {
-		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? v).importNode(t, !0);
+		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? _).importNode(t, !0);
 		T.currentNode = r;
 		let i = T.nextNode(), a = 0, o = 0, s = n[0];
 		for (; s !== void 0;) {
 			if (a === s.index) {
 				let t;
-				s.type === 2 ? t = new De(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new je(i, this, e)), this._$AV.push(t), s = n[++o];
+				s.type === 2 ? t = new Oe(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new Me(i, this, e)), this._$AV.push(t), s = n[++o];
 			}
 			a !== s?.index && (i = T.nextNode(), a++);
 		}
-		return T.currentNode = v, r;
+		return T.currentNode = _, r;
 	}
 	p(e) {
 		let t = 0;
 		for (let n of this._$AV) n !== void 0 && (n.strings === void 0 ? n._$AI(e[t]) : (n._$AI(e, n, t), t += n.strings.length - 2)), t++;
 	}
-}, De = class e {
+}, Oe = class e {
 	get _$AU() {
 		return this._$AM?._$AU ?? this._$Cv;
 	}
@@ -377,7 +377,7 @@ var Ee = class {
 		return this._$AB;
 	}
 	_$AI(e, t = this) {
-		e = D(this, e, t), b(e) ? e === w || e == null || e === "" ? (this._$AH !== w && this._$AR(), this._$AH = w) : e !== this._$AH && e !== C && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? he(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
+		e = E(this, e, t), y(e) ? e === w || e == null || e === "" ? (this._$AH !== w && this._$AR(), this._$AH = w) : e !== this._$AH && e !== C && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? ge(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
 	}
 	O(e) {
 		return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -386,36 +386,36 @@ var Ee = class {
 		this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
 	}
 	_(e) {
-		this._$AH !== w && b(this._$AH) ? this._$AA.nextSibling.data = e : this.T(v.createTextNode(e)), this._$AH = e;
+		this._$AH !== w && y(this._$AH) ? this._$AA.nextSibling.data = e : this.T(_.createTextNode(e)), this._$AH = e;
 	}
 	$(e) {
-		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = E.createElement(we(n.h, n.h[0]), this.options)), n);
+		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = Ee.createElement(we(n.h, n.h[0]), this.options)), n);
 		if (this._$AH?._$AD === r) this._$AH.p(t);
 		else {
-			let e = new Ee(r, this), n = e.u(this.options);
+			let e = new De(r, this), n = e.u(this.options);
 			e.p(t), this.T(n), this._$AH = e;
 		}
 	}
 	_$AC(e) {
 		let t = Ce.get(e.strings);
-		return t === void 0 && Ce.set(e.strings, t = new E(e)), t;
+		return t === void 0 && Ce.set(e.strings, t = new Ee(e)), t;
 	}
 	k(t) {
-		me(this._$AH) || (this._$AH = [], this._$AR());
+		he(this._$AH) || (this._$AH = [], this._$AR());
 		let n = this._$AH, r, i = 0;
-		for (let a of t) i === n.length ? n.push(r = new e(this.O(y()), this.O(y()), this, this.options)) : r = n[i], r._$AI(a), i++;
+		for (let a of t) i === n.length ? n.push(r = new e(this.O(v()), this.O(v()), this, this.options)) : r = n[i], r._$AI(a), i++;
 		i < n.length && (this._$AR(r && r._$AB.nextSibling, i), n.length = i);
 	}
 	_$AR(e = this._$AA.nextSibling, t) {
 		for (this._$AP?.(!1, !0, t); e !== this._$AB;) {
-			let t = le(e).nextSibling;
-			le(e).remove(), e = t;
+			let t = ue(e).nextSibling;
+			ue(e).remove(), e = t;
 		}
 	}
 	setConnected(e) {
 		this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
 	}
-}, O = class {
+}, D = class {
 	get tagName() {
 		return this.element.tagName;
 	}
@@ -427,43 +427,43 @@ var Ee = class {
 	}
 	_$AI(e, t = this, n, r) {
 		let i = this.strings, a = !1;
-		if (i === void 0) e = D(this, e, t, 0), a = !b(e) || e !== this._$AH && e !== C, a && (this._$AH = e);
+		if (i === void 0) e = E(this, e, t, 0), a = !y(e) || e !== this._$AH && e !== C, a && (this._$AH = e);
 		else {
 			let r = e, o, s;
-			for (e = i[0], o = 0; o < i.length - 1; o++) s = D(this, r[n + o], t, o), s === C && (s = this._$AH[o]), a ||= !b(s) || s !== this._$AH[o], s === w ? e = w : e !== w && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
+			for (e = i[0], o = 0; o < i.length - 1; o++) s = E(this, r[n + o], t, o), s === C && (s = this._$AH[o]), a ||= !y(s) || s !== this._$AH[o], s === w ? e = w : e !== w && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
 		}
 		a && !r && this.j(e);
 	}
 	j(e) {
 		e === w ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
 	}
-}, Oe = class extends O {
+}, ke = class extends D {
 	constructor() {
 		super(...arguments), this.type = 3;
 	}
 	j(e) {
 		this.element[this.name] = e === w ? void 0 : e;
 	}
-}, ke = class extends O {
+}, Ae = class extends D {
 	constructor() {
 		super(...arguments), this.type = 4;
 	}
 	j(e) {
 		this.element.toggleAttribute(this.name, !!e && e !== w);
 	}
-}, Ae = class extends O {
+}, je = class extends D {
 	constructor(e, t, n, r, i) {
 		super(e, t, n, r, i), this.type = 5;
 	}
 	_$AI(e, t = this) {
-		if ((e = D(this, e, t, 0) ?? w) === C) return;
+		if ((e = E(this, e, t, 0) ?? w) === C) return;
 		let n = this._$AH, r = e === w && n !== w || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== w && (n === w || r);
 		r && this.element.removeEventListener(this.name, this, n), i && this.element.addEventListener(this.name, this, e), this._$AH = e;
 	}
 	handleEvent(e) {
 		typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
 	}
-}, je = class {
+}, Me = class {
 	constructor(e, t, n) {
 		this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = n;
 	}
@@ -471,18 +471,18 @@ var Ee = class {
 		return this._$AM._$AU;
 	}
 	_$AI(e) {
-		D(this, e);
+		E(this, e);
 	}
-}, Me = ce.litHtmlPolyfillSupport;
-Me?.(E, De), (ce.litHtmlVersions ??= []).push("3.3.3");
-var Ne = (e, t, n) => {
+}, Ne = le.litHtmlPolyfillSupport;
+Ne?.(Ee, Oe), (le.litHtmlVersions ??= []).push("3.3.3");
+var Pe = (e, t, n) => {
 	let r = n?.renderBefore ?? t, i = r._$litPart$;
 	if (i === void 0) {
 		let e = n?.renderBefore ?? null;
-		r._$litPart$ = i = new De(t.insertBefore(y(), e), e, void 0, n ?? {});
+		r._$litPart$ = i = new Oe(t.insertBefore(v(), e), e, void 0, n ?? {});
 	}
 	return i._$AI(e), i;
-}, k = globalThis, A = class extends h {
+}, Fe = globalThis, O = class extends m {
 	constructor() {
 		super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
 	}
@@ -492,7 +492,7 @@ var Ne = (e, t, n) => {
 	}
 	update(e) {
 		let t = this.render();
-		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Ne(t, this.renderRoot, this.renderOptions);
+		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Pe(t, this.renderRoot, this.renderOptions);
 	}
 	connectedCallback() {
 		super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -504,21 +504,21 @@ var Ne = (e, t, n) => {
 		return C;
 	}
 };
-A._$litElement$ = !0, A.finalized = !0, k.litElementHydrateSupport?.({ LitElement: A });
-var Pe = k.litElementPolyfillSupport;
-Pe?.({ LitElement: A }), (k.litElementVersions ??= []).push("4.2.2");
+O._$litElement$ = !0, O.finalized = !0, Fe.litElementHydrateSupport?.({ LitElement: O });
+var Ie = Fe.litElementPolyfillSupport;
+Ie?.({ LitElement: O }), (Fe.litElementVersions ??= []).push("4.2.2");
 // ../../../node_modules/@lit/reactive-element/decorators/custom-element.js
-var j = (e) => (t, n) => {
+var k = (e) => (t, n) => {
 	n === void 0 ? customElements.define(e, t) : n.addInitializer(() => {
 		customElements.define(e, t);
 	});
-}, Fe = {
+}, Le = {
 	attribute: !0,
 	type: String,
 	converter: p,
 	reflect: !1,
-	hasChanged: m
-}, Ie = (e = Fe, t, n) => {
+	hasChanged: se
+}, Re = (e = Le, t, n) => {
 	let { kind: r, metadata: i } = n, a = globalThis.litPropertyMetadata.get(i);
 	if (a === void 0 && globalThis.litPropertyMetadata.set(i, a = /* @__PURE__ */ new Map()), r === "setter" && ((e = Object.create(e)).wrapped = !0), a.set(n.name, e), r === "accessor") {
 		let { name: r } = n;
@@ -541,48 +541,48 @@ var j = (e) => (t, n) => {
 	}
 	throw Error("Unsupported decorator location: " + r);
 };
-function Le(e) {
-	return (t, n) => typeof n == "object" ? Ie(e, t, n) : ((e, t, n) => {
+function ze(e) {
+	return (t, n) => typeof n == "object" ? Re(e, t, n) : ((e, t, n) => {
 		let r = t.hasOwnProperty(n);
 		return t.constructor.createProperty(n, e), r ? Object.getOwnPropertyDescriptor(t, n) : void 0;
 	})(e, t, n);
 }
 // ../../../node_modules/@lit/reactive-element/decorators/state.js
-function Re(e) {
-	return Le({
+function Be(e) {
+	return ze({
 		...e,
 		state: !0,
 		attribute: !1
 	});
 }
 // src/cards.ts
-var M = (e, t, n) => {
+var A = (e, t, n) => {
 	let r = {
 		type: "tile",
 		entity: e,
 		name: n ?? [{ type: "entity" }]
 	};
 	return t && (r.features = t), r;
-}, ze = (e) => {
+}, Ve = (e) => {
 	switch (e) {
 		case "bar": return [{ type: "bar-gauge" }];
 		case "trend": return [{ type: "trend-graph" }];
 		case "none": return;
 	}
-}, N = (e, t) => {
+}, j = (e, t) => {
 	let n = {
 		type: "heading",
 		heading: e
 	};
 	return t && (n.icon = t), n;
-}, Be = (e, t, n) => {
+}, He = (e, t, n) => {
 	let r = {
 		type: "history-graph",
 		hours_to_show: t,
 		entities: e
 	};
 	return n && (r.title = n), r;
-}, Ve = (e, t, n) => {
+}, Ue = (e, t, n) => {
 	let r = e.single.get("version");
 	return !e.webClientUrl || !r ? [] : [{
 		type: "entity",
@@ -596,7 +596,7 @@ var M = (e, t, n) => {
 			url_path: `${e.webClientUrl}/${t === "overview" ? "" : t}`
 		}
 	}];
-}, He = [
+}, We = [
 	["update", "Update"],
 	["version", "Version"],
 	["os", "OS"],
@@ -604,7 +604,7 @@ var M = (e, t, n) => {
 	["boot_time", "Booted"],
 	["pending_reboot", "Pending reboot"],
 	["displays_connected", "Displays"]
-], Ue = (e) => He.flatMap(([t, n]) => {
+], Ge = (e) => We.flatMap(([t, n]) => {
 	let r = e.single.get(t);
 	return r ? [{
 		type: "entity",
@@ -613,10 +613,10 @@ var M = (e, t, n) => {
 		show_name: !0,
 		show_state: !0
 	}] : [];
-}), P = (e, t, n) => [...e.items[t].keys()].map((e) => ({
+}), M = (e, t, n) => [...e.items[t].keys()].map((e) => ({
 	section: n,
 	item: e
-})), F = [
+})), N = [
 	{
 		page: "overview",
 		title: "Overview",
@@ -630,6 +630,12 @@ var M = (e, t, n) => {
 			{ section: "overview-power" },
 			{ section: "overview-temperatures" }
 		]
+	},
+	{
+		page: "audio",
+		title: "Audio",
+		icon: "mdi:volume-high",
+		sections: () => [{ section: "audio-outputs" }, { section: "audio-inputs" }]
 	},
 	{
 		page: "battery",
@@ -657,19 +663,19 @@ var M = (e, t, n) => {
 		page: "disks",
 		title: "Disks",
 		icon: "mdi:harddisk",
-		sections: (e) => [...P(e, "mount", "mount"), { section: "disk-activity" }]
+		sections: (e) => [...M(e, "mount", "mount"), { section: "disk-activity" }]
 	},
 	{
 		page: "displays",
 		title: "Displays",
 		icon: "mdi:monitor",
-		sections: (e) => P(e, "display", "display")
+		sections: (e) => M(e, "display", "display")
 	},
 	{
 		page: "gpus",
 		title: "GPUs",
 		icon: "mdi:expansion-card-variant",
-		sections: (e) => P(e, "gpu", "gpu")
+		sections: (e) => M(e, "gpu", "gpu")
 	},
 	{
 		page: "media",
@@ -687,7 +693,7 @@ var M = (e, t, n) => {
 		page: "networks",
 		title: "Networks",
 		icon: "mdi:lan",
-		sections: (e) => [{ section: "network" }, ...P(e, "interface", "interface")]
+		sections: (e) => [{ section: "network" }, ...M(e, "interface", "interface")]
 	},
 	{
 		page: "processes",
@@ -702,7 +708,7 @@ var M = (e, t, n) => {
 		diagnostics: !0,
 		sections: () => [{ section: "system" }, { section: "commands" }]
 	}
-], We = "2026.10", Ge = /* @__PURE__ */ new Map([
+], Ke = "2026.10", qe = /* @__PURE__ */ new Map([
 	["disk_device_read_rate", "2026.11"],
 	["disk_device_write_rate", "2026.11"],
 	["disk_read_rate", "2026.11"],
@@ -740,11 +746,16 @@ var M = (e, t, n) => {
 	["power_logout", "2026.12"],
 	["power_restart", "2026.12"],
 	["power_shutdown", "2026.12"],
-	["power_sleep", "2026.12"]
-]), Ke = (e) => {
+	["power_sleep", "2026.12"],
+	["audio", "2026.12"],
+	["audio_input", "2026.12"],
+	["audio_input_mute", "2026.12"],
+	["audio_input_volume", "2026.12"],
+	["audio_output", "2026.12"]
+]), Je = (e) => {
 	let [t = 0, n = 0] = e.split(".").map((e) => Number.parseInt(e, 10));
 	return t * 100 + n;
-}, qe = (e, t) => Ke(e) >= Ke(t), Je = "system_bridge", Ye = [
+}, P = (e, t) => Je(e) >= Je(t), Ye = "system_bridge", Xe = [
 	{
 		kind: "mount",
 		translationPrefix: "space_used",
@@ -789,18 +800,28 @@ var M = (e, t, n) => {
 		kind: "core",
 		translationPrefix: "cpu_power_core",
 		keyPrefix: "cpu_power_core_"
+	},
+	{
+		kind: "audio_output",
+		translationPrefix: "audio_output",
+		keyPrefix: "audio_output_"
+	},
+	{
+		kind: "audio_input",
+		translationPrefix: "audio_input_",
+		keyPrefix: "audio_input_"
 	}
-], Xe = (e) => e.identifiers.find(([e]) => e === Je)?.[1], Ze = (e) => Object.values(e.devices).filter((e) => e !== void 0 && Xe(e) !== void 0), I = (e, t) => {
-	if (!qe(e.config.version, "2026.10")) return { error: "release" };
-	let n = Ze(e);
+], Ze = (e) => e.identifiers.find(([e]) => e === Ye)?.[1], Qe = (e) => Object.values(e.devices).filter((e) => e !== void 0 && Ze(e) !== void 0), F = (e, t) => {
+	if (!P(e.config.version, "2026.10")) return { error: "release" };
+	let n = Qe(e);
 	if (t) {
 		let e = n.find(({ id: e }) => e === t);
 		return e ? { device: e } : { error: "not_found" };
 	}
 	let [r, ...i] = n;
 	return r ? i.length > 0 ? { error: "several" } : { device: r } : { error: "none" };
-}, Qe = (e, t) => {
-	if (t) for (let n of Ye) {
+}, $e = (e, t) => {
+	if (t) for (let n of Xe) {
 		if (!t.startsWith(n.translationPrefix) || !e.startsWith(n.keyPrefix)) continue;
 		let r = t.slice(n.translationPrefix.length), i = e.slice(n.keyPrefix.length, r ? -(r.length + 1) : void 0);
 		return {
@@ -809,13 +830,15 @@ var M = (e, t, n) => {
 			field: r || t
 		};
 	}
-}, $e = (e) => {
+}, et = (e) => {
 	let [t, ...n] = e.map((e) => e.split(" "));
 	if (!t || n.length === 0) return;
 	let r = t.findIndex((e, t) => n.some((n) => n[t] !== e));
 	return (r === -1 ? t : t.slice(0, r)).join(" ") || void 0;
-}, et = (e, t, n) => {
-	let r = Xe(t) ?? "", i = /* @__PURE__ */ new Map(), a = {
+}, tt = (e, t, n) => {
+	let r = Ze(t) ?? "", i = /* @__PURE__ */ new Map(), a = {
+		audio_input: /* @__PURE__ */ new Map(),
+		audio_output: /* @__PURE__ */ new Map(),
 		battery: /* @__PURE__ */ new Map(),
 		core: /* @__PURE__ */ new Map(),
 		disk: /* @__PURE__ */ new Map(),
@@ -825,9 +848,9 @@ var M = (e, t, n) => {
 		mount: /* @__PURE__ */ new Map()
 	};
 	for (let o of n) {
-		let n = o.unique_id.slice(r.length + 1), s = Ge.get(o.translation_key ?? n);
-		if (s !== void 0 && !qe(e.config.version, s) || o.platform !== Je || o.device_id !== t.id || o.hidden_by !== null || e.states[o.entity_id] === void 0 || !o.unique_id.startsWith(r)) continue;
-		let c = Qe(n, o.translation_key);
+		let n = o.unique_id.slice(r.length + 1), s = qe.get(o.translation_key ?? n);
+		if (s !== void 0 && !P(e.config.version, s) || o.platform !== Ye || o.device_id !== t.id || o.hidden_by !== null || e.states[o.entity_id] === void 0 || !o.unique_id.startsWith(r)) continue;
+		let c = $e(n, o.translation_key);
 		if (!c) {
 			i.set(n || o.entity_id.slice(0, o.entity_id.indexOf(".")), o.entity_id);
 			continue;
@@ -839,17 +862,17 @@ var M = (e, t, n) => {
 		};
 		l.fields.set(c.field, o.entity_id), o.original_name && l.labels.set(c.field, o.original_name), a[c.kind].set(c.id, l);
 	}
-	for (let [e, t] of a.gpu) t.name = $e([...t.labels.values()]) ?? `GPU ${e}`;
+	for (let [e, t] of a.gpu) t.name = et([...t.labels.values()]) ?? `GPU ${e}`;
 	return {
 		device: t,
 		webClientUrl: t.configuration_url ? URL.parse(t.configuration_url)?.origin : void 0,
 		single: i,
 		items: a
 	};
-}, tt, nt = (e) => (tt?.entities !== e.entities && (tt = {
+}, I, nt = (e) => (I?.entities !== e.entities && (I = {
 	entities: e.entities,
 	entries: e.connection.sendMessagePromise({ type: "config/entity_registry/list" })
-}), tt.entries), L = async (e, t) => et(e, t, await nt(e)), R = (e, t) => {
+}), I.entries), L = async (e, t) => tt(e, t, await nt(e)), R = (e, t) => {
 	let n = e.filter((e) => e !== void 0);
 	if (n.every((e) => e.type === "heading")) return;
 	let r = {
@@ -857,44 +880,61 @@ var M = (e, t, n) => {
 		cards: n
 	};
 	return t && (r.column_span = t), r;
-}, z = ({ single: e }, ...t) => t.flatMap((t) => e.get(t) ?? []), B = (e, ...t) => t.flatMap((t) => e?.fields.get(t) ?? []), V = ({ items: e }, t, n) => [...e[t].values()].flatMap((e) => B(e, n)), H = (e, t, n) => e.length > 0 ? Be(e, t, n) : void 0, rt = (e) => e ? M(e) : void 0, U = (e, t) => e ? M(e, t) : void 0, W = (e, t, n, r) => n.flatMap((n) => {
+}, z = ({ single: e }, ...t) => t.flatMap((t) => e.get(t) ?? []), B = (e, ...t) => t.flatMap((t) => e?.fields.get(t) ?? []), V = ({ items: e }, t, n) => [...e[t].values()].flatMap((e) => B(e, n)), H = (e, t, n) => e.length > 0 ? He(e, t, n) : void 0, rt = (e) => e ? A(e) : void 0, U = (e, t) => e ? A(e, t) : void 0, W = (e, t, n, r) => n.flatMap((n) => {
 	let i = e?.fields.get(n);
 	if (!i) return [];
 	let a = e?.labels.get(n), o = a?.startsWith(t) ? a.slice(t.length).trim() : "";
-	return [M(i, r, o ? `${o.charAt(0).toUpperCase()}${o.slice(1)}` : void 0)];
+	return [A(i, r, o ? `${o.charAt(0).toUpperCase()}${o.slice(1)}` : void 0)];
 }), it = {
-	storage: ({ entities: e }) => R([N("Storage", "mdi:harddisk"), ...V(e, "mount", "space_used").map((e) => M(e))]),
-	"now-playing": ({ entities: e }) => R([N("Now playing", "mdi:play-circle-outline"), ...z(e, "media").map((e) => M(e, [{ type: "media-player-playback" }, { type: "media-player-volume-slider" }]))]),
-	"overview-load": ({ entities: e, hours: t }) => R([N("CPU and memory", "mdi:cpu-64-bit"), H(z(e, "processes_load", "memory_used_percentage"), t)]),
+	storage: ({ entities: e }) => R([j("Storage", "mdi:harddisk"), ...V(e, "mount", "space_used").map((e) => A(e))]),
+	"now-playing": ({ entities: e }) => R([
+		j("Now playing", "mdi:play-circle-outline"),
+		...z(e, "media").map((e) => A(e, [{ type: "media-player-playback" }, { type: "media-player-volume-slider" }])),
+		...z(e, "audio").map((e) => A(e, [{ type: "media-player-volume-slider" }]))
+	]),
+	"audio-outputs": ({ entities: e }) => R([
+		j("Outputs", "mdi:speaker"),
+		...z(e, "audio").map((e) => A(e, [{ type: "media-player-volume-slider" }, { type: "media-player-source" }])),
+		...V(e, "audio_output", "audio_output").map((e) => A(e, [{ type: "media-player-volume-slider" }]))
+	]),
+	"audio-inputs": ({ entities: e }) => R([
+		j("Inputs", "mdi:microphone"),
+		...z(e, "audio_input").map((e) => A(e, [{ type: "select-options" }])),
+		...[...e.items.audio_input.values()].flatMap((e) => [...B(e, "volume").map((e) => A(e, [{
+			type: "numeric-input",
+			style: "slider"
+		}])), ...B(e, "mute").map((e) => A(e))])
+	]),
+	"overview-load": ({ entities: e, hours: t }) => R([j("CPU and memory", "mdi:cpu-64-bit"), H(z(e, "processes_load", "memory_used_percentage"), t)]),
 	"overview-power": ({ entities: e, hours: t }) => {
 		let n = z(e, "power_usage", "cpu_power_package");
 		return R([
-			N("Power", "mdi:flash"),
-			...n.map((e) => M(e)),
+			j("Power", "mdi:flash"),
+			...n.map((e) => A(e)),
 			H(n, t)
 		]);
 	},
 	"overview-temperatures": ({ entities: e, hours: t }) => {
 		let n = [...z(e, "cpu_temperature"), ...V(e, "gpu", "temperature")];
 		return R([
-			N("Temperatures", "mdi:thermometer"),
-			...n.map((e) => M(e)),
+			j("Temperatures", "mdi:thermometer"),
+			...n.map((e) => A(e)),
 			H(n, t)
 		]);
 	},
 	battery: ({ entities: e, percentage: t }) => R([
-		N("Battery", "mdi:battery"),
+		j("Battery", "mdi:battery"),
 		U(e.single.get("battery"), t),
-		...z(e, "battery_state", "battery_time_remaining", "battery_is_charging", "ac_connected", "battery_power", "battery_voltage").map((e) => M(e))
+		...z(e, "battery_state", "battery_time_remaining", "battery_is_charging", "ac_connected", "battery_power", "battery_voltage").map((e) => A(e))
 	]),
-	"device-batteries": ({ entities: e, percentage: t }) => R([N("Devices", "mdi:battery-bluetooth"), ...[...e.items.battery.values()].flatMap((e) => [...B(e, "battery_info").map((e) => M(e, t)), ...B(e, "state").map((e) => M(e))])]),
+	"device-batteries": ({ entities: e, percentage: t }) => R([j("Devices", "mdi:battery-bluetooth"), ...[...e.items.battery.values()].flatMap((e) => [...B(e, "battery_info").map((e) => A(e, t)), ...B(e, "state").map((e) => A(e))])]),
 	cpu: ({ entities: e, percentage: t }) => R([
-		N("Usage", "mdi:cpu-64-bit"),
+		j("Usage", "mdi:cpu-64-bit"),
 		U(e.single.get("processes_load"), t),
-		...z(e, "cpu_speed", "cpu_power_package", "load_average", "cpu_temperature", "cpu_voltage").map((e) => M(e))
+		...z(e, "cpu_speed", "cpu_power_package", "load_average", "cpu_temperature", "cpu_voltage").map((e) => A(e))
 	]),
 	"cpu-history": ({ entities: e, hours: t }) => R([
-		N("Usage over time"),
+		j("Usage over time"),
 		H(z(e, "processes_load"), t, "Usage"),
 		H(z(e, "cpu_speed"), t, "Frequency"),
 		H(z(e, "cpu_power_package"), t, "Power"),
@@ -902,27 +942,27 @@ var M = (e, t, n) => {
 		H(z(e, "cpu_temperature"), t, "Temperature")
 	], 2),
 	"cpu-cores": ({ entities: e }) => R([
-		N("Cores"),
-		...V(e, "core", "processes_load_cpu").map((e) => M(e)),
-		...V(e, "core", "cpu_power_core").map((e) => M(e))
+		j("Cores"),
+		...V(e, "core", "processes_load_cpu").map((e) => A(e)),
+		...V(e, "core", "cpu_power_core").map((e) => A(e))
 	]),
 	memory: ({ entities: e, percentage: t }) => R([
-		N("In use", "mdi:memory"),
+		j("In use", "mdi:memory"),
 		U(e.single.get("memory_used_percentage"), t),
-		...z(e, "memory_free", "memory_used").map((e) => M(e)),
+		...z(e, "memory_free", "memory_used").map((e) => A(e)),
 		U(e.single.get("swap_used_percentage"), t),
 		rt(e.single.get("swap_used"))
 	]),
-	"memory-history": ({ entities: e, hours: t }) => R([N("Usage over time"), H(z(e, "memory_used_percentage", "swap_used_percentage"), t)], 2),
+	"memory-history": ({ entities: e, hours: t }) => R([j("Usage over time"), H(z(e, "memory_used_percentage", "swap_used_percentage"), t)], 2),
 	mount: ({ entities: e, item: t, percentage: n }) => {
 		let r = t === void 0 ? void 0 : e.items.mount.get(t), i = r?.name ?? "";
-		return R([N(i, "mdi:harddisk"), ...W(r, i, ["space_used"], n)]);
+		return R([j(i, "mdi:harddisk"), ...W(r, i, ["space_used"], n)]);
 	},
 	"disk-activity": ({ entities: e, hours: t }) => {
 		let n = z(e, "disk_read_rate", "disk_write_rate");
 		return R([
-			N("Activity", "mdi:swap-vertical"),
-			...n.map((e) => M(e)),
+			j("Activity", "mdi:swap-vertical"),
+			...n.map((e) => A(e)),
 			H(n, t),
 			H([...e.items.disk.values()].flatMap((e) => B(e, "read_rate", "write_rate")), t, "Per disk")
 		]);
@@ -930,7 +970,7 @@ var M = (e, t, n) => {
 	display: ({ entities: e, item: t }) => {
 		let n = t === void 0 ? void 0 : e.items.display.get(t), r = `Display ${n?.name ?? ""}`;
 		return R([
-			N(r, "mdi:monitor"),
+			j(r, "mdi:monitor"),
 			...W(n, r, ["power"], [{ type: "toggle" }]),
 			...W(n, r, ["brightness"], [{
 				type: "numeric-input",
@@ -946,7 +986,7 @@ var M = (e, t, n) => {
 	gpu: ({ entities: e, item: t, hours: n, percentage: r }) => {
 		let i = t === void 0 ? void 0 : e.items.gpu.get(t), a = i?.name ?? "";
 		return R([
-			N(a, "mdi:expansion-card-variant"),
+			j(a, "mdi:expansion-card-variant"),
 			...W(i, a, [
 				"usage_percentage",
 				"memory_used_percentage",
@@ -973,15 +1013,15 @@ var M = (e, t, n) => {
 	network: ({ entities: e, hours: t }) => {
 		let n = z(e, "network_download_rate", "network_upload_rate");
 		return R([
-			N("Network", "mdi:lan"),
-			...n.map((e) => M(e)),
+			j("Network", "mdi:lan"),
+			...n.map((e) => A(e)),
 			H(n, t)
 		]);
 	},
 	interface: ({ entities: e, item: t, hours: n }) => {
 		let r = t === void 0 ? void 0 : e.items.interface.get(t), i = r?.name ?? "";
 		return R([
-			N(i, "mdi:ethernet"),
+			j(i, "mdi:ethernet"),
 			...W(r, i, [
 				"download_rate",
 				"upload_rate",
@@ -993,20 +1033,22 @@ var M = (e, t, n) => {
 		]);
 	},
 	desktop: ({ entities: e, hours: t }) => R([
-		N("Session", "mdi:account-clock-outline"),
-		...z(e, "locked", "idle_time").map((e) => M(e)),
+		j("Session", "mdi:account-clock-outline"),
+		...z(e, "locked", "idle_time").map((e) => A(e)),
 		H(z(e, "idle_time"), t)
 	]),
 	processes: ({ entities: e, hours: t }) => R([
-		N("Processes", "mdi:application-cog-outline"),
+		j("Processes", "mdi:application-cog-outline"),
 		rt(e.single.get("processes_count")),
 		H(z(e, "processes_count"), t)
 	]),
-	commands: ({ entities: e }) => R([N("Commands", "mdi:power"), ...z(e, "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown").map((e) => M(e))]),
-	system: ({ entities: e }) => R([N("Device", "mdi:information-outline"), ...z(e, "power_usage", "camera_in_use").map((e) => M(e))])
+	commands: ({ entities: e }) => R([j("Commands", "mdi:power"), ...z(e, "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown").map((e) => A(e))]),
+	system: ({ entities: e }) => R([j("Device", "mdi:information-outline"), ...z(e, "power_usage", "camera_in_use").map((e) => A(e))])
 }, at = (e) => Object.hasOwn(it, e), G = (e, t, n, r, i, a = 2) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${a}" fill="currentColor" fill-opacity="${i}"/>`, K = (e, t, n, r, i = 3) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${i}" stroke="currentColor" stroke-opacity="0.48" stroke-width="2"/>`, q = (e, t, n, r) => `<circle cx="${e}" cy="${t}" r="${n}" fill="currentColor" fill-opacity="${r}"/>`, J = (e, t) => `<path d="${e}" stroke="currentColor" stroke-opacity="${t}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`, Y = (e, t) => `<path d="${e}" fill="currentColor" fill-opacity="${t}"/>`, X = (e, t) => Array.from({ length: e }, (e, n) => t(n)).join(""), ot = "M8 28 L22 24 L36 30 L50 14 L64 20 L78 10 L86 12", st = {
 	storage: G(8, 10, 78, 6, .12, 3) + G(8, 10, 52, 6, .4, 3) + G(8, 19, 78, 6, .12, 3) + G(8, 19, 30, 6, .4, 3) + G(8, 28, 78, 6, .12, 3) + G(8, 28, 64, 6, .4, 3),
 	"now-playing": Y("M12 12 L12 32 L28 22 Z", .48) + G(36, 17, 50, 3, .12, 1.5) + G(36, 17, 28, 3, .4, 1.5) + G(36, 25, 30, 3, .24, 1.5),
+	"audio-outputs": Y("M14 17 L20 17 L28 10 L28 34 L20 27 L14 27 Z", .48) + G(36, 15, 50, 4, .12, 2) + G(36, 15, 34, 4, .4, 2) + G(36, 25, 50, 4, .12, 2) + G(36, 25, 20, 4, .4, 2),
+	"audio-inputs": G(17, 9, 10, 17, .48, 5) + J("M13 22 Q22 34 31 22 M22 30 L22 35", .48) + G(36, 15, 50, 4, .12, 2) + G(36, 15, 26, 4, .4, 2) + G(36, 25, 50, 4, .12, 2) + G(36, 25, 40, 4, .4, 2),
 	"overview-load": J("M8 30 L22 24 L36 28 L50 16 L64 22 L78 12 L86 14", .72) + J("M8 34 L22 32 L36 33 L50 28 L64 30 L78 26 L86 27", .32),
 	"overview-power": Y("M46 6 L34 24 L43 24 L40 38 L56 18 L46 18 Z", .48),
 	"overview-temperatures": G(24, 8, 8, 22, .24, 4) + q(28, 32, 6, .48) + G(26, 14, 4, 18, .48, 2) + J("M46 32 L56 24 L66 28 L78 12", .72),
@@ -1109,11 +1151,11 @@ var dt = /* @__PURE__ */ new Map([
 	tile_feature: "bar",
 	show_icon_and_title: !0,
 	show_top_links: !0
-}, Q = F.map(({ page: e }) => e), _t = (e) => ({ select: {
+}, Q = N.map(({ page: e }) => e), _t = (e) => ({ select: {
 	multiple: !0,
 	reorder: e,
 	mode: "dropdown",
-	options: F.map(({ page: e, title: t }) => ({
+	options: N.map(({ page: e, title: t }) => ({
 		value: e,
 		label: t
 	}))
@@ -1145,7 +1187,9 @@ var dt = /* @__PURE__ */ new Map([
 	return [t.charAt(0).toUpperCase() + t.slice(1), ...n].join(" ");
 }, St = {
 	storage: "Space used on every mount.",
-	"now-playing": "The media playing, with playback and volume controls.",
+	"now-playing": "The media playing, with playback and volume controls, and the system volume.",
+	"audio-outputs": "Volume of each audio output, such as speakers.",
+	"audio-inputs": "Volume of each audio input, such as a microphone.",
 	"overview-load": "CPU and memory load in one graph.",
 	"overview-power": "Power draw, with a graph.",
 	"overview-temperatures": "CPU and GPU temperatures, with a graph.",
@@ -1211,7 +1255,7 @@ var dt = /* @__PURE__ */ new Map([
 		required: !0,
 		selector: { select: {
 			mode: "dropdown",
-			options: F.map(({ page: e, title: t }) => ({
+			options: N.map(({ page: e, title: t }) => ({
 				value: e,
 				label: t
 			}))
@@ -1282,7 +1326,7 @@ var dt = /* @__PURE__ */ new Map([
 			}))
 		} }
 	}] : []
-], kt = (e) => !("page" in e) && !("section" in e), $ = class extends A {
+], kt = (e) => !("page" in e) && !("section" in e), $ = class extends O {
 	constructor(...e) {
 		super(...e), this._computeLabel = (e) => dt.get(e.name) ?? e.name, this._computeHelper = (e) => Ct.get(e.name), this._generalChanged = (e) => {
 			if (e.stopPropagation(), !this._config) return;
@@ -1307,7 +1351,7 @@ var dt = /* @__PURE__ */ new Map([
 		let n = t.device_id ?? "";
 		if (this._entitiesFor === n) return;
 		this._entitiesFor = n;
-		let r = I(e, t.device_id);
+		let r = F(e, t.device_id);
 		"device" in r ? L(e, r.device).then((e) => {
 			this._entitiesFor === n && (this._entities = e);
 		}) : this._entities = void 0;
@@ -1368,10 +1412,10 @@ var dt = /* @__PURE__ */ new Map([
   `;
 	}
 };
-Z([Le({ attribute: !1 })], $.prototype, "hass", void 0), Z([Re()], $.prototype, "_config", void 0), Z([Re()], $.prototype, "_entities", void 0), $ = Z([j("system-bridge-strategy-editor")], $);
+Z([ze({ attribute: !1 })], $.prototype, "hass", void 0), Z([Be()], $.prototype, "_config", void 0), Z([Be()], $.prototype, "_entities", void 0), $ = Z([k("system-bridge-strategy-editor")], $);
 // src/section-strategy.ts
 var At = ["entities", "devices"], jt = {
-	release: `The System Bridge dashboard needs Home Assistant ${We} or later.`,
+	release: `The System Bridge dashboard needs Home Assistant ${Ke} or later.`,
 	none: "No System Bridge devices found. Add the System Bridge integration first.",
 	several: "There are several System Bridge devices. Choose one in the settings.",
 	not_found: "The System Bridge device was not found. Choose another in the settings."
@@ -1379,20 +1423,20 @@ var At = ["entities", "devices"], jt = {
 	entities: e,
 	item: n,
 	hours: r.hours_to_show ?? 1,
-	percentage: ze(r.tile_feature ?? "bar")
+	percentage: Ve(r.tile_feature ?? "bar")
 }), Pt = (e) => ({
 	type: "grid",
 	cards: [{
 		type: "markdown",
 		content: e
 	}]
-}), Ft = class extends h {
+}), Ft = class extends m {
 	static {
 		this.registryDependencies = At;
 	}
 	static async generate(e, t) {
 		if (!at(e.section)) return Pt(`Unknown System Bridge section "${e.section}".`);
-		let n = I(t, e.device_id);
+		let n = F(t, e.device_id);
 		return "error" in n ? Pt(Mt(n)) : Nt(await L(t, n.device), {
 			section: e.section,
 			item: e.item
@@ -1402,10 +1446,10 @@ var At = ["entities", "devices"], jt = {
 		return document.createElement("system-bridge-strategy-editor");
 	}
 	static getStubConfig(e) {
-		if (!qe(e.config.version, "2026.10")) return;
+		if (!P(e.config.version, "2026.10")) return;
 		let t = /* @__PURE__ */ new Map();
 		for (let n of Object.values(e.entities)) n?.device_id && t.set(n.device_id, (t.get(n.device_id) ?? 0) + 1);
-		let [n] = Ze(e).sort((e, n) => (t.get(n.id) ?? 0) - (t.get(e.id) ?? 0));
+		let [n] = Qe(e).sort((e, n) => (t.get(n.id) ?? 0) - (t.get(e.id) ?? 0));
 		return n ? {
 			type: lt,
 			device_id: n.id,
@@ -1413,7 +1457,7 @@ var At = ["entities", "devices"], jt = {
 		} : void 0;
 	}
 };
-Ft = Z([j("ll-strategy-section-system-bridge")], Ft);
+Ft = Z([k("ll-strategy-section-system-bridge")], Ft);
 // src/view-strategy.ts
 var It = (e, t, n) => e.sections(t).filter((e) => Nt(t, e, n) !== void 0).map((e) => {
 	let r = {
@@ -1429,14 +1473,14 @@ var It = (e, t, n) => e.sections(t).filter((e) => Nt(t, e, n) !== void 0).map((e
 	icon: e.icon,
 	show_icon_and_title: n.show_icon_and_title ?? !0,
 	max_columns: 3,
-	badges: [...n.show_top_links === !1 ? [] : Ve(t, e.page, e.title), ...e.diagnostics ? Ue(t) : []],
+	badges: [...n.show_top_links === !1 ? [] : Ue(t, e.page, e.title), ...e.diagnostics ? Ge(t) : []],
 	sections: It(e, t, n)
-}), Rt = class extends h {
+}), Rt = class extends m {
 	static {
 		this.registryDependencies = At;
 	}
 	static async generate(e, t) {
-		let n = F.find(({ page: t }) => t === e.page);
+		let n = N.find(({ page: t }) => t === e.page);
 		if (!n) return {
 			title: "System Bridge",
 			cards: [{
@@ -1444,7 +1488,7 @@ var It = (e, t, n) => e.sections(t).filter((e) => Nt(t, e, n) !== void 0).map((e
 				content: `Unknown System Bridge page "${e.page}".`
 			}]
 		};
-		let r = I(t, e.device_id);
+		let r = F(t, e.device_id);
 		return "error" in r ? {
 			title: n.title,
 			cards: [{
@@ -1457,14 +1501,14 @@ var It = (e, t, n) => e.sections(t).filter((e) => Nt(t, e, n) !== void 0).map((e
 		return document.createElement("system-bridge-strategy-editor");
 	}
 };
-Rt = Z([j("ll-strategy-view-system-bridge")], Rt);
+Rt = Z([k("ll-strategy-view-system-bridge")], Rt);
 // src/dashboard-strategy.ts
-var zt = class extends h {
+var zt = class extends m {
 	static {
 		this.registryDependencies = At;
 	}
 	static async generate(e, t) {
-		let n = I(t, e.device_id);
+		let n = F(t, e.device_id);
 		if ("error" in n) return { views: [{
 			title: "System Bridge",
 			cards: [{
@@ -1473,7 +1517,7 @@ var zt = class extends h {
 			}]
 		}] };
 		let r = await L(t, n.device);
-		return { views: (e.pages ?? F.map(({ page: e }) => e)).flatMap((e) => F.filter(({ page: t }) => t === e)).filter((t) => It(t, r, e).length > 0).map((t) => Lt(t, r, {
+		return { views: (e.pages ?? N.map(({ page: e }) => e)).flatMap((e) => N.filter(({ page: t }) => t === e)).filter((t) => It(t, r, e).length > 0).map((t) => Lt(t, r, {
 			...e,
 			show_icon_and_title: e.icon_and_title_pages?.includes(t.page) ?? !0,
 			show_top_links: e.top_links_pages?.includes(t.page) ?? !0
@@ -1489,7 +1533,7 @@ var zt = class extends h {
 		return document.createElement("system-bridge-strategy-editor");
 	}
 };
-zt = Z([j("ll-strategy-dashboard-system-bridge")], zt);
+zt = Z([k("ll-strategy-dashboard-system-bridge")], zt);
 // src/index.ts
 var Bt = "https://system-bridge.timmo.dev/using/home-assistant/#dashboard", Vt = [{
 	strategyType: "dashboard",
