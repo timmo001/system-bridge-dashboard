@@ -602,7 +602,8 @@ var M = (e, t, n) => {
 	["os", "OS"],
 	["kernel", "Kernel"],
 	["boot_time", "Booted"],
-	["pending_reboot", "Pending reboot"]
+	["pending_reboot", "Pending reboot"],
+	["displays_connected", "Displays"]
 ], Ue = (e) => He.flatMap(([t, n]) => {
 	let r = e.single.get(t);
 	return r ? [{
@@ -645,6 +646,12 @@ var M = (e, t, n) => {
 			{ section: "cpu-history" },
 			{ section: "cpu-cores" }
 		]
+	},
+	{
+		page: "desktop",
+		title: "Desktop",
+		icon: "mdi:application-outline",
+		sections: () => [{ section: "desktop" }]
 	},
 	{
 		page: "disks",
@@ -715,7 +722,19 @@ var M = (e, t, n) => {
 	["battery_info_state", "2026.11"],
 	["battery_power", "2026.11"],
 	["battery_state", "2026.11"],
-	["battery_voltage", "2026.11"]
+	["battery_voltage", "2026.11"],
+	["display_brightness", "2026.12"],
+	["display_power", "2026.12"],
+	["gpu_decoder_usage_percentage", "2026.12"],
+	["gpu_encoder_usage_percentage", "2026.12"],
+	["gpu_fan_speed_percentage", "2026.12"],
+	["gpu_memory_total", "2026.12"],
+	["gpu_performance_state", "2026.12"],
+	["gpu_power_limit", "2026.12"],
+	["swap_used", "2026.12"],
+	["swap_used_percentage", "2026.12"],
+	["idle_time", "2026.12"],
+	["locked", "2026.12"]
 ]), Ke = (e) => {
 	let [t = 0, n = 0] = e.split(".").map((e) => Number.parseInt(e, 10));
 	return t * 100 + n;
@@ -884,9 +903,11 @@ var M = (e, t, n) => {
 	memory: ({ entities: e, percentage: t }) => R([
 		N("In use", "mdi:memory"),
 		U(e.single.get("memory_used_percentage"), t),
-		...z(e, "memory_free", "memory_used").map((e) => M(e))
+		...z(e, "memory_free", "memory_used").map((e) => M(e)),
+		U(e.single.get("swap_used_percentage"), t),
+		rt(e.single.get("swap_used"))
 	]),
-	"memory-history": ({ entities: e, hours: t }) => R([N("Usage over time"), H(z(e, "memory_used_percentage"), t)], 2),
+	"memory-history": ({ entities: e, hours: t }) => R([N("Usage over time"), H(z(e, "memory_used_percentage", "swap_used_percentage"), t)], 2),
 	mount: ({ entities: e, item: t, percentage: n }) => {
 		let r = t === void 0 ? void 0 : e.items.mount.get(t), i = r?.name ?? "";
 		return R([N(i, "mdi:harddisk"), ...W(r, i, ["space_used"], n)]);
@@ -902,26 +923,44 @@ var M = (e, t, n) => {
 	},
 	display: ({ entities: e, item: t }) => {
 		let n = t === void 0 ? void 0 : e.items.display.get(t), r = `Display ${n?.name ?? ""}`;
-		return R([N(r, "mdi:monitor"), ...W(n, r, [
-			"resolution_x",
-			"resolution_y",
-			"refresh_rate"
-		])]);
+		return R([
+			N(r, "mdi:monitor"),
+			...W(n, r, ["power"], [{ type: "toggle" }]),
+			...W(n, r, ["brightness"], [{
+				type: "numeric-input",
+				style: "slider"
+			}]),
+			...W(n, r, [
+				"resolution_x",
+				"resolution_y",
+				"refresh_rate"
+			])
+		]);
 	},
 	gpu: ({ entities: e, item: t, hours: n, percentage: r }) => {
 		let i = t === void 0 ? void 0 : e.items.gpu.get(t), a = i?.name ?? "";
 		return R([
 			N(a, "mdi:expansion-card-variant"),
-			...W(i, a, ["usage_percentage", "memory_used_percentage"], r),
 			...W(i, a, [
+				"usage_percentage",
+				"memory_used_percentage",
+				"encoder_usage_percentage",
+				"decoder_usage_percentage"
+			], r),
+			...W(i, a, [
+				"memory_used",
 				"memory_free",
+				"memory_total",
 				"power_usage",
+				"power_limit",
 				"temperature",
 				"core_clock_speed",
 				"memory_clock_speed",
-				"fan_speed"
+				"fan_speed",
+				"fan_speed_percentage",
+				"performance_state"
 			]),
-			H(B(i, "usage_percentage", "memory_used_percentage"), n, "Load over time"),
+			H(B(i, "usage_percentage", "memory_used_percentage", "encoder_usage_percentage", "decoder_usage_percentage"), n, "Load over time"),
 			H(B(i, "power_usage", "temperature"), n, "Power and temperature")
 		]);
 	},
@@ -947,6 +986,11 @@ var M = (e, t, n) => {
 			H(B(r, "download_rate", "upload_rate"), n)
 		]);
 	},
+	desktop: ({ entities: e, hours: t }) => R([
+		N("Session", "mdi:account-clock-outline"),
+		...z(e, "locked", "idle_time").map((e) => M(e)),
+		H(z(e, "idle_time"), t)
+	]),
 	processes: ({ entities: e, hours: t }) => R([
 		N("Processes", "mdi:application-cog-outline"),
 		rt(e.single.get("processes_count")),
@@ -1000,6 +1044,7 @@ var M = (e, t, n) => {
 	gpu: K(12, 10, 70, 22, 3) + q(34, 21, 7, .32) + q(34, 21, 2.5, .48) + G(50, 16, 24, 3, .24, 1.5) + G(50, 23, 14, 3, .24, 1.5) + G(18, 32, 14, 3, .32),
 	network: Y("M30 8 L40 20 L34 20 L34 34 L26 34 L26 20 L20 20 Z", .48) + Y("M64 36 L74 24 L68 24 L68 10 L60 10 L60 24 L54 24 Z", .32),
 	interface: q(20, 22, 6, .48) + q(74, 22, 6, .48) + G(26, 21, 42, 2, .32, 1) + G(43, 14, 8, 16, .24, 2),
+	desktop: G(36, 20, 22, 16, .48, 3) + "<path d=\"M41 20 V15 A6 6 0 0 1 53 15 V20\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>",
 	processes: X(4, (e) => G(8, 9 + e * 8, 6, 5, .4, 1) + G(18, 9 + e * 8, [
 		60,
 		44,
@@ -1101,14 +1146,15 @@ var dt = /* @__PURE__ */ new Map([
 	cpu: "CPU usage, speed, power, load average, temperature and voltage.",
 	"cpu-history": "Graphs of CPU usage, speed, power, load average and temperature.",
 	"cpu-cores": "Load and power of each CPU core.",
-	memory: "Memory in use, free and used.",
-	"memory-history": "Graph of memory usage.",
+	memory: "Memory and swap in use, free and used.",
+	"memory-history": "Graph of memory and swap usage.",
 	mount: "One mount point: space used. Set the item to the mount point.",
 	"disk-activity": "Disk read and write rates, in total and per disk.",
-	display: "One display: resolution and refresh rate. Set the item to the display name.",
-	gpu: "One GPU: load, memory, power, temperature, clocks and fan. Set the item to the GPU name.",
+	display: "One display: power, brightness, resolution and refresh rate. Set the item to the display name.",
+	gpu: "One GPU: load, encoder and decoder, memory, power, temperature, clocks, fan and performance state. Set the item to the GPU name.",
 	network: "Download and upload rates, with a graph.",
 	interface: "One network interface: rates, Wi-Fi details and a graph. Set the item to the interface name.",
+	desktop: "Whether the session is locked, and how long it's been idle.",
 	processes: "The number of processes, with a graph.",
 	system: "Device power usage and whether the camera is in use."
 }, Ct = /* @__PURE__ */ new Map([
@@ -1132,6 +1178,7 @@ var dt = /* @__PURE__ */ new Map([
 	"gpu",
 	"network",
 	"interface",
+	"desktop",
 	"processes"
 ]), Tt = /* @__PURE__ */ new Set([
 	"battery",
