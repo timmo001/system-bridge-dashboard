@@ -718,7 +718,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		page: "networks",
 		title: "Networks",
 		icon: "mdi:lan",
-		sections: (e) => [{ section: "network" }, ...j(e, "interface", "interface")]
+		sections: (e) => [{ section: "network-activity" }, ...j(e, "interface", "interface")]
 	},
 	{
 		page: "processes",
@@ -793,6 +793,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	F("device-batteries", "battery_info", "battery_info_state"),
 	F("disk-activity", "disk_read_rate", "disk_write_rate", "disk_device_read_rate", "disk_device_write_rate"),
 	F("network", "network_download_rate", "network_upload_rate"),
+	F("network-activity", "network_download_rate", "network_upload_rate"),
 	F("interface", "network_interface_download_rate", "network_interface_upload_rate", "network_interface_ssid", "network_interface_signal_strength", "network_interface_link_rate"),
 	F("desktop", "locked", "idle_time"),
 	F("commands", "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown"),
@@ -800,7 +801,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 ]), Qe = (e, ...t) => [e, Xe(t.map((e) => Ze.get(e)))], $e = new Map([
 	Qe("audio", "audio-outputs", "audio-inputs"),
 	Qe("desktop", "desktop"),
-	Qe("networks", "network", "interface")
+	Qe("networks", "network-activity", "interface")
 ]), et = "system_bridge", tt = [
 	{
 		kind: "mount",
@@ -925,7 +926,23 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		type: "grid",
 		cards: n
 	};
-	return t && (r.column_span = t), r;
+	if (t && (r.column_span = t), t && t > 1) {
+		let e = n.filter((e) => e.type === "history-graph"), t = n.filter((e) => e.type !== "history-graph"), i = t.every((e) => e.type === "heading"), a = Array.from({ length: Math.ceil(e.length / 2) }, (t, n) => e.slice(n * 2, n * 2 + 2));
+		r.cards = [...t, ...a.flatMap((e) => {
+			let [t, n] = e;
+			return t ? n ? i ? e : [{
+				type: "grid",
+				columns: 2,
+				square: !1,
+				cards: e,
+				grid_options: { columns: "full" }
+			}] : [{
+				...t,
+				grid_options: { columns: "full" }
+			}] : [];
+		})];
+	}
+	return r;
 }, z = ({ single: e }, ...t) => t.flatMap((t) => e.get(t) ?? []), B = (e, ...t) => t.flatMap((t) => e?.fields.get(t) ?? []), V = ({ items: e }, t, n) => [...e[t].values()].flatMap((e) => B(e, n)), H = (e, t, n) => e.length > 0 ? We(e, t, n) : void 0, lt = (e) => e ? k(e) : void 0, U = (e, t) => e ? k(e, t) : void 0, ut = {
 	source: { type: "media-player-source" },
 	playback: {
@@ -1026,7 +1043,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 			...n.map((e) => k(e)),
 			H(n, t),
 			H([...e.items.disk.values()].flatMap((e) => B(e, "read_rate", "write_rate")), t, "Per disk")
-		]);
+		], 2);
 	},
 	display: ({ entities: e, item: t }) => {
 		let n = t === void 0 ? void 0 : e.items.display.get(t), r = `Display ${n?.name ?? ""}`;
@@ -1067,9 +1084,11 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 				"fan_speed_percentage",
 				"performance_state"
 			]),
-			H(B(i, "usage_percentage", "memory_used_percentage", "encoder_usage_percentage", "decoder_usage_percentage"), n, "Load over time"),
-			H(B(i, "power_usage", "temperature"), n, "Power and temperature")
-		]);
+			H(B(i, "usage_percentage", "encoder_usage_percentage", "decoder_usage_percentage"), n, "Load"),
+			H(B(i, "memory_used_percentage"), n, "Memory"),
+			H(B(i, "power_usage"), n, "Power"),
+			H(B(i, "temperature"), n, "Temperature")
+		], 2);
 	},
 	network: ({ entities: e, hours: t, link: n }) => {
 		let r = z(e, "network_download_rate", "network_upload_rate");
@@ -1078,6 +1097,15 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 			...r.map((e) => k(e)),
 			H(r, t)
 		]);
+	},
+	"network-activity": ({ entities: e, hours: t }) => {
+		let n = z(e, "network_download_rate"), r = z(e, "network_upload_rate");
+		return R([
+			A("Network", "mdi:lan"),
+			...[...n, ...r].map((e) => k(e)),
+			H(n, t, "Download"),
+			H(r, t, "Upload")
+		], 2);
 	},
 	interface: ({ entities: e, item: t, hours: n }) => {
 		let r = t === void 0 ? void 0 : e.items.interface.get(t), i = r?.name ?? "";
@@ -1090,19 +1118,20 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 				"signal_strength",
 				"link_rate"
 			]),
-			H(B(r, "download_rate", "upload_rate"), n)
-		]);
+			H(B(r, "download_rate"), n, "Download"),
+			H(B(r, "upload_rate"), n, "Upload")
+		], 2);
 	},
 	desktop: ({ entities: e, hours: t }) => R([
 		A("Session", "mdi:account-clock-outline"),
 		...z(e, "locked", "idle_time").map((e) => k(e)),
 		H(z(e, "idle_time"), t)
-	]),
+	], 2),
 	processes: ({ entities: e, hours: t }) => R([
 		A("Processes", "mdi:application-cog-outline"),
 		lt(e.single.get("processes_count")),
 		H(z(e, "processes_count"), t)
-	]),
+	], 2),
 	commands: ({ entities: e }) => R([A("Commands", "mdi:power"), ...z(e, "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown").map((e) => k(e))]),
 	power: ({ entities: e }) => R([
 		A("Power", "mdi:lightning-bolt"),
@@ -1159,6 +1188,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	display: K(24, 8, 46, 24, 3) + G(42, 32, 10, 3, .4) + G(36, 35, 22, 2, .4),
 	gpu: K(12, 10, 70, 22, 3) + q(34, 21, 7, .32) + q(34, 21, 2.5, .48) + G(50, 16, 24, 3, .24, 1.5) + G(50, 23, 14, 3, .24, 1.5) + G(18, 32, 14, 3, .32),
 	network: Y("M30 8 L40 20 L34 20 L34 34 L26 34 L26 20 L20 20 Z", .48) + Y("M64 36 L74 24 L68 24 L68 10 L60 10 L60 24 L54 24 Z", .32),
+	"network-activity": J("M8 30 L18 24 L28 28 L38 14 L44 18", .72) + J("M50 34 L60 30 L70 32 L80 26 L86 28", .32),
 	interface: q(20, 22, 6, .48) + q(74, 22, 6, .48) + G(26, 21, 42, 2, .32, 1) + G(43, 14, 8, 16, .24, 2),
 	desktop: G(36, 20, 22, 16, .48, 3) + "<path d=\"M41 20 V15 A6 6 0 0 1 53 15 V20\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>",
 	processes: X(4, (e) => G(8, 9 + e * 8, 6, 5, .4, 1) + G(18, 9 + e * 8, [
@@ -1204,6 +1234,7 @@ var wt = /* @__PURE__ */ new Map([
 	["item", "Item"],
 	["show_icon_and_title", "Icon and title"],
 	["show_top_links", "Web client link"],
+	["max_columns", "Maximum columns"],
 	["pages_options", "Page options"],
 	["pages", "Pages"],
 	["icon_and_title_pages", "Icon and title"],
@@ -1247,6 +1278,7 @@ var wt = /* @__PURE__ */ new Map([
 	show_icon_and_title: !0,
 	show_top_links: !0,
 	show_input_source: !0,
+	max_columns: 4,
 	media_features: St,
 	audio_features: Ct
 }, Q = M.map(({ page: e }) => e), Mt = (e, t) => t === void 0 || e !== void 0 && P(e, t), Nt = (e) => new Set(Q.filter((t) => !Mt(e, $e.get(t)))), Pt = (e, t, n) => {
@@ -1304,6 +1336,7 @@ var wt = /* @__PURE__ */ new Map([
 	display: "One display: power, brightness, resolution and refresh rate. Set the item to the display name.",
 	gpu: "One GPU: load, encoder and decoder, memory, power, temperature, clocks, fan and performance state. Set the item to the GPU name.",
 	network: "Download and upload rates, with a graph.",
+	"network-activity": "Download and upload rates, with a graph of each.",
 	interface: "One network interface: rates, Wi-Fi details and a graph. Set the item to the interface name.",
 	desktop: "Whether the session is locked, and how long it's been idle.",
 	processes: "The number of processes, with a graph.",
@@ -1315,6 +1348,7 @@ var wt = /* @__PURE__ */ new Map([
 	["page", "The web client page this view shows."],
 	["item", "For sections about one thing: its mount point, GPU, display or interface name."],
 	["hours_to_show", "Hours that graphs go back."],
+	["max_columns", "The most columns of sections a page shows side by side on a wide screen."],
 	["tile_feature", "Shown under percentages such as CPU and memory usage."],
 	["show_icon_and_title", "Show the icon next to the title in the tab."],
 	["show_top_links", "Show a link to the System Bridge web client at the top."],
@@ -1333,6 +1367,7 @@ var wt = /* @__PURE__ */ new Map([
 	"disk-activity",
 	"gpu",
 	"network",
+	"network-activity",
 	"interface",
 	"desktop",
 	"processes"
@@ -1417,6 +1452,15 @@ var wt = /* @__PURE__ */ new Map([
 			selector: { boolean: {} }
 		}]
 	}] : [],
+	..."section" in e ? [] : [{
+		name: "max_columns",
+		selector: { number: {
+			min: 1,
+			max: 6,
+			mode: "slider",
+			slider_ticks: !0
+		} }
+	}],
 	..."section" in e ? [{
 		name: "section",
 		required: !0,
@@ -1478,7 +1522,7 @@ var wt = /* @__PURE__ */ new Map([
 				...this._config,
 				...e.detail.value
 			};
-			if (t.hours_to_show === 1 && delete t.hours_to_show, t.tile_feature === "bar" && delete t.tile_feature, "show_icon_and_title" in t && t.show_icon_and_title && delete t.show_icon_and_title, "show_top_links" in t && t.show_top_links && delete t.show_top_links, t.media_features && Qt(t.media_features, St) && delete t.media_features, t.audio_features && Qt(t.audio_features, Ct) && delete t.audio_features, t.show_input_source && delete t.show_input_source, en(t)) {
+			if (t.hours_to_show === 1 && delete t.hours_to_show, t.tile_feature === "bar" && delete t.tile_feature, "show_icon_and_title" in t && t.show_icon_and_title && delete t.show_icon_and_title, "show_top_links" in t && t.show_top_links && delete t.show_top_links, "max_columns" in t && t.max_columns === 4 && delete t.max_columns, t.media_features && Qt(t.media_features, St) && delete t.media_features, t.audio_features && Qt(t.audio_features, Ct) && delete t.audio_features, t.show_input_source && delete t.show_input_source, en(t)) {
 				let e = en(this._config) ? this._config : void 0, n = Nt(this.hass?.config.version);
 				for (let r of [
 					"pages",
@@ -1618,20 +1662,29 @@ var tn = ["entities", "devices"], nn = {
 };
 sn = Z([O("ll-strategy-section-system-bridge")], sn);
 // src/view-strategy.ts
-var cn = (e, t, n, r = /* @__PURE__ */ new Set()) => e.sections(t).filter((e) => an(t, e, n) !== void 0).map(({ link: e, ...i }) => {
-	let a = {
+var cn = (e, t, n, r = /* @__PURE__ */ new Set()) => e.sections(t).flatMap((e) => {
+	let r = an(t, e, n);
+	return r ? [{
+		ref: e,
+		columnSpan: r.column_span
+	}] : [];
+}).map(({ ref: { link: e, ...i }, columnSpan: a }) => {
+	let o = {
 		type: vt,
 		device_id: t.device.id,
 		...i
 	};
-	return e !== void 0 && r.has(e) && (a.link = e), n.hours_to_show !== void 0 && (a.hours_to_show = n.hours_to_show), n.tile_feature !== void 0 && (a.tile_feature = n.tile_feature), n.media_features !== void 0 && (a.media_features = n.media_features), n.audio_features !== void 0 && (a.audio_features = n.audio_features), n.show_input_source !== void 0 && (a.show_input_source = n.show_input_source), { strategy: a };
+	return e !== void 0 && r.has(e) && (o.link = e), n.hours_to_show !== void 0 && (o.hours_to_show = n.hours_to_show), n.tile_feature !== void 0 && (o.tile_feature = n.tile_feature), n.media_features !== void 0 && (o.media_features = n.media_features), n.audio_features !== void 0 && (o.audio_features = n.audio_features), n.show_input_source !== void 0 && (o.show_input_source = n.show_input_source), a ? {
+		strategy: o,
+		column_span: a
+	} : { strategy: o };
 }), ln = (e, t, n, r) => ({
 	type: "sections",
 	title: e.title,
 	path: e.page,
 	icon: e.icon,
 	show_icon_and_title: n.show_icon_and_title ?? !0,
-	max_columns: 3,
+	max_columns: n.max_columns ?? 4,
 	badges: [...n.show_top_links === !1 ? [] : Ge(t, e.page, e.title), ...e.diagnostics ? qe(t) : []],
 	sections: cn(e, t, n, r)
 }), un = class extends m {
