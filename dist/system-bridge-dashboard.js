@@ -734,7 +734,8 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		sections: () => [
 			{ section: "system" },
 			{ section: "power" },
-			{ section: "commands" }
+			{ section: "commands" },
+			{ section: "notifications" }
 		]
 	}
 ], Je = "2026.10", Ye = /* @__PURE__ */ new Map([
@@ -782,7 +783,8 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	["audio_input_volume", "2026.12"],
 	["audio_output", "2026.12"],
 	["keep_awake", "2026.12"],
-	["power_profile", "2026.12"]
+	["power_profile", "2026.12"],
+	["notification", "2026.12"]
 ]), N = (e) => {
 	let [t = 0, n = 0] = e.split(".").map((e) => Number.parseInt(e, 10));
 	return t * 100 + n;
@@ -797,6 +799,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	F("interface", "network_interface_download_rate", "network_interface_upload_rate", "network_interface_ssid", "network_interface_signal_strength", "network_interface_link_rate"),
 	F("desktop", "locked", "idle_time"),
 	F("commands", "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown"),
+	F("notifications", "notification"),
 	F("power", "power_profile", "keep_awake")
 ]), Qe = (e, ...t) => [e, Xe(t.map((e) => Ze.get(e)))], $e = new Map([
 	Qe("audio", "audio-outputs", "audio-inputs"),
@@ -943,7 +946,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		})];
 	}
 	return r;
-}, z = ({ single: e }, ...t) => t.flatMap((t) => e.get(t) ?? []), B = (e, ...t) => t.flatMap((t) => e?.fields.get(t) ?? []), V = ({ items: e }, t, n) => [...e[t].values()].flatMap((e) => B(e, n)), H = (e, t, n) => e.length > 0 ? We(e, t, n) : void 0, lt = (e) => e ? k(e) : void 0, U = (e, t) => e ? k(e, t) : void 0, ut = {
+}, z = ({ single: e }, ...t) => t.flatMap((t) => e.get(t) ?? []), B = (e, ...t) => t.flatMap((t) => e?.fields.get(t) ?? []), V = ({ items: e }, t, n) => [...e[t].values()].flatMap((e) => B(e, n)), H = (e, t, n) => e.length > 0 ? We(e, t, n) : void 0, lt = (e) => e ? k(e) : void 0, ut = (e, t) => e ? k(e, t) : void 0, dt = {
 	source: { type: "media-player-source" },
 	playback: {
 		type: "media-player-playback",
@@ -958,22 +961,22 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	},
 	volume_buttons: { type: "media-player-volume-buttons" },
 	volume_slider: { type: "media-player-volume-slider" }
-}, dt = (e) => e.map((e) => ut[e]), ft = (e, t) => ({
-	...k(e, dt(t)),
+}, ft = (e) => e.map((e) => dt[e]), pt = (e, t) => ({
+	...k(e, ft(t)),
 	features_position: "inline"
-}), W = (e, t, n, r) => n.flatMap((n) => {
+}), U = (e, t, n, r) => n.flatMap((n) => {
 	let i = e?.fields.get(n);
 	if (!i) return [];
 	let a = e?.labels.get(n), o = a?.startsWith(t) ? a.slice(t.length).trim() : "";
 	return [k(i, r, o ? `${o.charAt(0).toUpperCase()}${o.slice(1)}` : void 0)];
-}), pt = {
+}), mt = {
 	storage: ({ entities: e, link: t }) => R([A("Storage", "mdi:harddisk", t), ...V(e, "mount", "space_used").map((e) => k(e))]),
-	audio: ({ entities: e, audioFeatures: t, link: n }) => R([A("Audio", "mdi:volume-high", n), ...z(e, "audio").map((e) => ft(e, t))]),
-	"now-playing": ({ entities: e, mediaFeatures: t, link: n }) => R([A("Now playing", "mdi:play-circle-outline", n), ...z(e, "media").map((e) => ft(e, t))]),
+	audio: ({ entities: e, audioFeatures: t, link: n }) => R([A("Audio", "mdi:volume-high", n), ...z(e, "audio").map((e) => pt(e, t))]),
+	"now-playing": ({ entities: e, mediaFeatures: t, link: n }) => R([A("Now playing", "mdi:play-circle-outline", n), ...z(e, "media").map((e) => pt(e, t))]),
 	"audio-outputs": ({ entities: e, audioFeatures: t }) => R([
 		A("Outputs", "mdi:speaker"),
-		...z(e, "audio").map((e) => ft(e, t)),
-		...V(e, "audio_output", "audio_output").map((e) => k(e, dt(t.filter((e) => e !== "source"))))
+		...z(e, "audio").map((e) => pt(e, t)),
+		...V(e, "audio_output", "audio_output").map((e) => k(e, ft(t.filter((e) => e !== "source"))))
 	]),
 	"audio-inputs": ({ entities: e, inputSource: t }) => R([
 		A("Inputs", "mdi:microphone"),
@@ -1002,13 +1005,13 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	},
 	battery: ({ entities: e, percentage: t }) => R([
 		A("Battery", "mdi:battery"),
-		U(e.single.get("battery"), t),
+		ut(e.single.get("battery"), t),
 		...z(e, "battery_state", "battery_time_remaining", "battery_is_charging", "ac_connected", "battery_power", "battery_voltage").map((e) => k(e))
 	]),
 	"device-batteries": ({ entities: e, percentage: t }) => R([A("Devices", "mdi:battery-bluetooth"), ...[...e.items.battery.values()].flatMap((e) => [...B(e, "battery_info").map((e) => k(e, t)), ...B(e, "state").map((e) => k(e))])]),
 	cpu: ({ entities: e, percentage: t }) => R([
 		A("Usage", "mdi:cpu-64-bit"),
-		U(e.single.get("processes_load"), t),
+		ut(e.single.get("processes_load"), t),
 		...z(e, "cpu_speed", "cpu_power_package", "load_average", "cpu_temperature", "cpu_voltage").map((e) => k(e))
 	]),
 	"cpu-history": ({ entities: e, hours: t }) => R([
@@ -1026,15 +1029,15 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 	]),
 	memory: ({ entities: e, percentage: t }) => R([
 		A("In use", "mdi:memory"),
-		U(e.single.get("memory_used_percentage"), t),
+		ut(e.single.get("memory_used_percentage"), t),
 		...z(e, "memory_free", "memory_used").map((e) => k(e)),
-		U(e.single.get("swap_used_percentage"), t),
+		ut(e.single.get("swap_used_percentage"), t),
 		lt(e.single.get("swap_used"))
 	]),
 	"memory-history": ({ entities: e, hours: t }) => R([A("Usage over time"), H(z(e, "memory_used_percentage", "swap_used_percentage"), t)], 2),
 	mount: ({ entities: e, item: t, percentage: n }) => {
 		let r = t === void 0 ? void 0 : e.items.mount.get(t), i = r?.name ?? "";
-		return R([A(i, "mdi:harddisk"), ...W(r, i, ["space_used"], n)]);
+		return R([A(i, "mdi:harddisk"), ...U(r, i, ["space_used"], n)]);
 	},
 	"disk-activity": ({ entities: e, hours: t }) => {
 		let n = z(e, "disk_read_rate", "disk_write_rate");
@@ -1049,12 +1052,12 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		let n = t === void 0 ? void 0 : e.items.display.get(t), r = `Display ${n?.name ?? ""}`;
 		return R([
 			A(r, "mdi:monitor"),
-			...W(n, r, ["power"], [{ type: "toggle" }]),
-			...W(n, r, ["brightness"], [{
+			...U(n, r, ["power"], [{ type: "toggle" }]),
+			...U(n, r, ["brightness"], [{
 				type: "numeric-input",
 				style: "slider"
 			}]),
-			...W(n, r, [
+			...U(n, r, [
 				"resolution_x",
 				"resolution_y",
 				"refresh_rate"
@@ -1065,13 +1068,13 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		let i = t === void 0 ? void 0 : e.items.gpu.get(t), a = i?.name ?? "";
 		return R([
 			A(a, "mdi:expansion-card-variant"),
-			...W(i, a, [
+			...U(i, a, [
 				"usage_percentage",
 				"memory_used_percentage",
 				"encoder_usage_percentage",
 				"decoder_usage_percentage"
 			], r),
-			...W(i, a, [
+			...U(i, a, [
 				"memory_used",
 				"memory_free",
 				"memory_total",
@@ -1111,7 +1114,7 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		let r = t === void 0 ? void 0 : e.items.interface.get(t), i = r?.name ?? "";
 		return R([
 			A(i, "mdi:ethernet"),
-			...W(r, i, [
+			...U(r, i, [
 				"download_rate",
 				"upload_rate",
 				"ssid",
@@ -1133,30 +1136,38 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		H(z(e, "processes_count"), t)
 	], 2),
 	commands: ({ entities: e }) => R([A("Commands", "mdi:power"), ...z(e, "power_lock", "power_logout", "power_sleep", "power_hibernate", "power_restart", "power_shutdown").map((e) => k(e))]),
+	notifications: ({ entities: e }) => R([
+		A("Notifications", "mdi:bell-outline"),
+		lt(e.single.get("notify")),
+		...z(e, "notification").map((e) => ({
+			...k(e),
+			state_content: ["event_type", "last_changed"]
+		}))
+	]),
 	power: ({ entities: e }) => R([
 		A("Power", "mdi:lightning-bolt"),
 		...z(e, "power_profile").map((e) => k(e, [{ type: "select-options" }])),
 		...z(e, "keep_awake").map((e) => k(e, [{ type: "toggle" }]))
 	]),
 	system: ({ entities: e }) => R([A("Device", "mdi:information-outline"), ...z(e, "power_usage", "camera_in_use").map((e) => k(e))])
-}, mt = (e) => Object.hasOwn(pt, e), G = (e, t, n, r, i, a = 2) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${a}" fill="currentColor" fill-opacity="${i}"/>`, K = (e, t, n, r, i = 3) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${i}" stroke="currentColor" stroke-opacity="0.48" stroke-width="2"/>`, q = (e, t, n, r) => `<circle cx="${e}" cy="${t}" r="${n}" fill="currentColor" fill-opacity="${r}"/>`, J = (e, t) => `<path d="${e}" stroke="currentColor" stroke-opacity="${t}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`, Y = (e, t) => `<path d="${e}" fill="currentColor" fill-opacity="${t}"/>`, X = (e, t) => Array.from({ length: e }, (e, n) => t(n)).join(""), ht = "M8 28 L22 24 L36 30 L50 14 L64 20 L78 10 L86 12", gt = {
-	storage: G(8, 10, 78, 6, .12, 3) + G(8, 10, 52, 6, .4, 3) + G(8, 19, 78, 6, .12, 3) + G(8, 19, 30, 6, .4, 3) + G(8, 28, 78, 6, .12, 3) + G(8, 28, 64, 6, .4, 3),
-	audio: Y("M14 17 L20 17 L28 10 L28 34 L20 27 L14 27 Z", .48) + G(36, 17, 50, 4, .12, 2) + G(36, 17, 34, 4, .4, 2) + G(36, 25, 30, 3, .24, 1.5),
-	"now-playing": Y("M12 12 L12 32 L28 22 Z", .48) + G(36, 17, 50, 3, .12, 1.5) + G(36, 17, 28, 3, .4, 1.5) + G(36, 25, 30, 3, .24, 1.5),
-	"audio-outputs": Y("M14 17 L20 17 L28 10 L28 34 L20 27 L14 27 Z", .48) + G(36, 15, 50, 4, .12, 2) + G(36, 15, 34, 4, .4, 2) + G(36, 25, 50, 4, .12, 2) + G(36, 25, 20, 4, .4, 2),
-	"audio-inputs": G(17, 9, 10, 17, .48, 5) + J("M13 22 Q22 34 31 22 M22 30 L22 35", .48) + G(36, 15, 50, 4, .12, 2) + G(36, 15, 26, 4, .4, 2) + G(36, 25, 50, 4, .12, 2) + G(36, 25, 40, 4, .4, 2),
-	"overview-load": J("M8 30 L22 24 L36 28 L50 16 L64 22 L78 12 L86 14", .72) + J("M8 34 L22 32 L36 33 L50 28 L64 30 L78 26 L86 27", .32),
-	"overview-power": Y("M46 6 L34 24 L43 24 L40 38 L56 18 L46 18 Z", .48),
-	"overview-temperatures": G(24, 8, 8, 22, .24, 4) + q(28, 32, 6, .48) + G(26, 14, 4, 18, .48, 2) + J("M46 32 L56 24 L66 28 L78 12", .72),
-	battery: K(24, 11, 44, 22, 4) + G(70, 18, 4, 8, .48, 1) + G(28, 15, 26, 14, .48),
-	"device-batteries": X(3, (e) => K(10 + e * 26, 14, 18, 12, 3) + G(29 + e * 26, 18, 2, 4, .48, 1) + G(13 + e * 26, 17, [
+}, ht = (e) => Object.hasOwn(mt, e), W = (e, t, n, r, i, a = 2) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${a}" fill="currentColor" fill-opacity="${i}"/>`, G = (e, t, n, r, i = 3) => `<rect x="${e}" y="${t}" width="${n}" height="${r}" rx="${i}" stroke="currentColor" stroke-opacity="0.48" stroke-width="2"/>`, K = (e, t, n, r) => `<circle cx="${e}" cy="${t}" r="${n}" fill="currentColor" fill-opacity="${r}"/>`, q = (e, t) => `<path d="${e}" stroke="currentColor" stroke-opacity="${t}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`, J = (e, t) => `<path d="${e}" fill="currentColor" fill-opacity="${t}"/>`, Y = (e, t) => Array.from({ length: e }, (e, n) => t(n)).join(""), gt = "M8 28 L22 24 L36 30 L50 14 L64 20 L78 10 L86 12", _t = {
+	storage: W(8, 10, 78, 6, .12, 3) + W(8, 10, 52, 6, .4, 3) + W(8, 19, 78, 6, .12, 3) + W(8, 19, 30, 6, .4, 3) + W(8, 28, 78, 6, .12, 3) + W(8, 28, 64, 6, .4, 3),
+	audio: J("M14 17 L20 17 L28 10 L28 34 L20 27 L14 27 Z", .48) + W(36, 17, 50, 4, .12, 2) + W(36, 17, 34, 4, .4, 2) + W(36, 25, 30, 3, .24, 1.5),
+	"now-playing": J("M12 12 L12 32 L28 22 Z", .48) + W(36, 17, 50, 3, .12, 1.5) + W(36, 17, 28, 3, .4, 1.5) + W(36, 25, 30, 3, .24, 1.5),
+	"audio-outputs": J("M14 17 L20 17 L28 10 L28 34 L20 27 L14 27 Z", .48) + W(36, 15, 50, 4, .12, 2) + W(36, 15, 34, 4, .4, 2) + W(36, 25, 50, 4, .12, 2) + W(36, 25, 20, 4, .4, 2),
+	"audio-inputs": W(17, 9, 10, 17, .48, 5) + q("M13 22 Q22 34 31 22 M22 30 L22 35", .48) + W(36, 15, 50, 4, .12, 2) + W(36, 15, 26, 4, .4, 2) + W(36, 25, 50, 4, .12, 2) + W(36, 25, 40, 4, .4, 2),
+	"overview-load": q("M8 30 L22 24 L36 28 L50 16 L64 22 L78 12 L86 14", .72) + q("M8 34 L22 32 L36 33 L50 28 L64 30 L78 26 L86 27", .32),
+	"overview-power": J("M46 6 L34 24 L43 24 L40 38 L56 18 L46 18 Z", .48),
+	"overview-temperatures": W(24, 8, 8, 22, .24, 4) + K(28, 32, 6, .48) + W(26, 14, 4, 18, .48, 2) + q("M46 32 L56 24 L66 28 L78 12", .72),
+	battery: G(24, 11, 44, 22, 4) + W(70, 18, 4, 8, .48, 1) + W(28, 15, 26, 14, .48),
+	"device-batteries": Y(3, (e) => G(10 + e * 26, 14, 18, 12, 3) + W(29 + e * 26, 18, 2, 4, .48, 1) + W(13 + e * 26, 17, [
 		12,
 		6,
 		9
 	][e] ?? 8, 6, .48, 1)),
-	cpu: K(34, 10, 26, 24, 4) + G(41, 17, 12, 10, .48) + X(3, (e) => G(39 + e * 8, 5, 2, 5, .32, 1)) + X(3, (e) => G(39 + e * 8, 34, 2, 5, .32, 1)),
-	"cpu-history": Y(`${ht} L86 34 L8 34 Z`, .12) + J(ht, .72),
-	"cpu-cores": X(8, (e) => G(8 + e % 4 * 20, 10 + Math.floor(e / 4) * 14, 18, 10, [
+	cpu: G(34, 10, 26, 24, 4) + W(41, 17, 12, 10, .48) + Y(3, (e) => W(39 + e * 8, 5, 2, 5, .32, 1)) + Y(3, (e) => W(39 + e * 8, 34, 2, 5, .32, 1)),
+	"cpu-history": J(`${gt} L86 34 L8 34 Z`, .12) + q(gt, .72),
+	"cpu-cores": Y(8, (e) => W(8 + e % 4 * 20, 10 + Math.floor(e / 4) * 14, 18, 10, [
 		.48,
 		.24,
 		.4,
@@ -1166,10 +1177,10 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 		.12,
 		.24
 	][e] ?? .24)),
-	memory: K(8, 12, 78, 20, 3) + X(6, (e) => G(14 + e * 12, 18, 8, 8, e < 4 ? .48 : .12, 1)),
-	"memory-history": J("M8 32 L24 32 L24 24 L40 24 L40 28 L58 28 L58 14 L72 14 L72 18 L86 18", .72),
-	mount: G(8, 12, 78, 20, .12, 4) + G(14, 20, 40, 4, .32, 2) + q(76, 22, 3, .48),
-	"disk-activity": X(11, (e) => {
+	memory: G(8, 12, 78, 20, 3) + Y(6, (e) => W(14 + e * 12, 18, 8, 8, e < 4 ? .48 : .12, 1)),
+	"memory-history": q("M8 32 L24 32 L24 24 L40 24 L40 28 L58 28 L58 14 L72 14 L72 18 L86 18", .72),
+	mount: W(8, 12, 78, 20, .12, 4) + W(14, 20, 40, 4, .32, 2) + K(76, 22, 3, .48),
+	"disk-activity": Y(11, (e) => {
 		let t = [
 			8,
 			16,
@@ -1183,49 +1194,50 @@ var He = /* @__PURE__ */ new Set(["select-options", "toggle"]), k = (e, t, n) =>
 			9,
 			15
 		][e] ?? 10;
-		return G(10 + e * 7, 36 - t, 5, t, e % 2 == 0 ? .48 : .24, 1);
+		return W(10 + e * 7, 36 - t, 5, t, e % 2 == 0 ? .48 : .24, 1);
 	}),
-	display: K(24, 8, 46, 24, 3) + G(42, 32, 10, 3, .4) + G(36, 35, 22, 2, .4),
-	gpu: K(12, 10, 70, 22, 3) + q(34, 21, 7, .32) + q(34, 21, 2.5, .48) + G(50, 16, 24, 3, .24, 1.5) + G(50, 23, 14, 3, .24, 1.5) + G(18, 32, 14, 3, .32),
-	network: Y("M30 8 L40 20 L34 20 L34 34 L26 34 L26 20 L20 20 Z", .48) + Y("M64 36 L74 24 L68 24 L68 10 L60 10 L60 24 L54 24 Z", .32),
-	"network-activity": J("M8 30 L18 24 L28 28 L38 14 L44 18", .72) + J("M50 34 L60 30 L70 32 L80 26 L86 28", .32),
-	interface: q(20, 22, 6, .48) + q(74, 22, 6, .48) + G(26, 21, 42, 2, .32, 1) + G(43, 14, 8, 16, .24, 2),
-	desktop: G(36, 20, 22, 16, .48, 3) + "<path d=\"M41 20 V15 A6 6 0 0 1 53 15 V20\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>",
-	processes: X(4, (e) => G(8, 9 + e * 8, 6, 5, .4, 1) + G(18, 9 + e * 8, [
+	display: G(24, 8, 46, 24, 3) + W(42, 32, 10, 3, .4) + W(36, 35, 22, 2, .4),
+	gpu: G(12, 10, 70, 22, 3) + K(34, 21, 7, .32) + K(34, 21, 2.5, .48) + W(50, 16, 24, 3, .24, 1.5) + W(50, 23, 14, 3, .24, 1.5) + W(18, 32, 14, 3, .32),
+	network: J("M30 8 L40 20 L34 20 L34 34 L26 34 L26 20 L20 20 Z", .48) + J("M64 36 L74 24 L68 24 L68 10 L60 10 L60 24 L54 24 Z", .32),
+	"network-activity": q("M8 30 L18 24 L28 28 L38 14 L44 18", .72) + q("M50 34 L60 30 L70 32 L80 26 L86 28", .32),
+	interface: K(20, 22, 6, .48) + K(74, 22, 6, .48) + W(26, 21, 42, 2, .32, 1) + W(43, 14, 8, 16, .24, 2),
+	desktop: W(36, 20, 22, 16, .48, 3) + "<path d=\"M41 20 V15 A6 6 0 0 1 53 15 V20\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>",
+	processes: Y(4, (e) => W(8, 9 + e * 8, 6, 5, .4, 1) + W(18, 9 + e * 8, [
 		60,
 		44,
 		52,
 		30
 	][e] ?? 40, 5, .24)),
-	commands: X(3, (e) => G(10 + e * 26, 12, 22, 20, e === 0 ? .48 : .24, 4)),
-	power: K(8, 10, 36, 24) + G(13, 26, 26, 4, .48, 2) + K(50, 10, 36, 24) + G(56, 18, 24, 8, .24, 4) + q(76, 22, 3, .48),
-	system: "<circle cx=\"47\" cy=\"22\" r=\"13\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>" + q(47, 15.5, 2, .48) + G(45, 20, 4, 11, .48, 1)
-}, _t = (e, t) => {
-	let n = t ? "white" : "black", r = `<svg width="94" height="44" viewBox="0 0 94 44" fill="none" color="${n}" xmlns="http://www.w3.org/2000/svg"><rect width="94" height="44" rx="8" fill="${t ? "#1C1C1C" : "white"}"/><rect x="0.5" y="0.5" width="93" height="43" rx="7.5" stroke="${n}" stroke-opacity="${t ? .24 : .12}"/>${gt[e]}</svg>`;
+	commands: Y(3, (e) => W(10 + e * 26, 12, 22, 20, e === 0 ? .48 : .24, 4)),
+	notifications: J("M30 10 H60 A4 4 0 0 1 64 14 V28 A4 4 0 0 1 60 32 H40 L33 37 V32 H30 A4 4 0 0 1 26 28 V14 A4 4 0 0 1 30 10 Z", .24) + W(32, 16, 22, 3, .48, 1.5) + W(32, 23, 14, 3, .32, 1.5) + K(64, 11, 5, .48),
+	power: G(8, 10, 36, 24) + W(13, 26, 26, 4, .48, 2) + G(50, 10, 36, 24) + W(56, 18, 24, 8, .24, 4) + K(76, 22, 3, .48),
+	system: "<circle cx=\"47\" cy=\"22\" r=\"13\" stroke=\"currentColor\" stroke-opacity=\"0.48\" stroke-width=\"2\"/>" + K(47, 15.5, 2, .48) + W(45, 20, 4, 11, .48, 1)
+}, vt = (e, t) => {
+	let n = t ? "white" : "black", r = `<svg width="94" height="44" viewBox="0 0 94 44" fill="none" color="${n}" xmlns="http://www.w3.org/2000/svg"><rect width="94" height="44" rx="8" fill="${t ? "#1C1C1C" : "white"}"/><rect x="0.5" y="0.5" width="93" height="43" rx="7.5" stroke="${n}" stroke-opacity="${t ? .24 : .12}"/>${_t[e]}</svg>`;
 	return `data:image/svg+xml,${encodeURIComponent(r)}`;
-}, vt = "custom:system-bridge", yt = [
+}, yt = "custom:system-bridge", bt = [
 	"none",
 	"bar",
 	"trend"
-], bt = [
+], xt = [
 	"source",
 	"playback",
 	"volume_buttons",
 	"volume_slider"
-], xt = [
+], St = [
 	"source",
 	"volume_buttons",
 	"volume_slider"
-], St = ["source", "playback"], Ct = ["source", "volume_buttons"];
+], Ct = ["source", "playback"], wt = ["source", "volume_buttons"];
 // \0@oxc-project+runtime@0.156.0/helpers/esm/decorate.js
-function Z(e, t, n, r) {
+function X(e, t, n, r) {
 	var i = arguments.length, a = i < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r, o;
 	if (typeof Reflect == "object" && typeof Reflect.decorate == "function") a = Reflect.decorate(e, t, n, r);
 	else for (var s = e.length - 1; s >= 0; s--) (o = e[s]) && (a = (i < 3 ? o(a) : i > 3 ? o(t, n, a) : o(t, n)) || a);
 	return i > 3 && a && Object.defineProperty(t, n, a), a;
 }
 // src/editor.ts
-var wt = /* @__PURE__ */ new Map([
+var Tt = /* @__PURE__ */ new Map([
 	["device_id", "Device"],
 	["hours_to_show", "History"],
 	["tile_feature", "Percentage tiles"],
@@ -1244,44 +1256,44 @@ var wt = /* @__PURE__ */ new Map([
 	["audio_options", "Audio"],
 	["audio_features", "Audio tiles"],
 	["show_input_source", "Audio input picker"]
-]), Tt = /* @__PURE__ */ new Map([
+]), Et = /* @__PURE__ */ new Map([
 	["source", "Source"],
 	["playback", "Playback"],
 	["volume_buttons", "Volume buttons"],
 	["volume_slider", "Volume slider"]
-]), Et = (e) => ({ select: {
+]), Dt = (e) => ({ select: {
 	multiple: !0,
 	reorder: !0,
 	mode: "dropdown",
 	options: e.map((e) => ({
 		value: e,
-		label: Tt.get(e) ?? e
+		label: Et.get(e) ?? e
 	}))
-} }), Dt = /* @__PURE__ */ new Map([
+} }), Ot = /* @__PURE__ */ new Map([
 	["none", "None"],
 	["bar", "Bar"],
 	["trend", "Trend"]
-]), Ot = /* @__PURE__ */ new Map([
+]), kt = /* @__PURE__ */ new Map([
 	["none", "Only the value"],
 	["bar", "The percentage as a bar"],
 	["trend", "Recent values as a graph"]
-]), kt = /* @__PURE__ */ new Map([
+]), At = /* @__PURE__ */ new Map([
 	["none", () => ""],
 	["bar", (e) => `<rect x="8" y="32" width="78" height="6" rx="3" fill="${e}" fill-opacity="0.24"/><rect x="8" y="32" width="46" height="6" rx="3" fill="${e}" fill-opacity="0.48"/>`],
 	["trend", (e) => `<path d="M8 37 L20 33 L32 36 L46 30 L60 34 L72 29 L86 32" stroke="${e}" stroke-opacity="0.72" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`]
-]), At = (e, t) => {
-	let n = t ? "#1C1C1C" : "white", r = t ? "white" : "black", i = kt.get(e)?.(r) ?? "", a = `<svg width="94" height="44" viewBox="0 0 94 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="94" height="44" rx="8" fill="${n}"/><rect x="0.5" y="0.5" width="93" height="43" rx="7.5" stroke="${r}" stroke-opacity="${t ? .24 : .12}"/><circle cx="17" cy="15" r="7" fill="${r}" fill-opacity="${t ? .24 : .12}"/><rect x="30" y="9" width="30" height="3" rx="1.5" fill="${r}" fill-opacity="${t ? .72 : .48}"/><rect x="30" y="16" width="20" height="3" rx="1.5" fill="${r}" fill-opacity="${t ? .48 : .32}"/>${i}</svg>`;
+]), jt = (e, t) => {
+	let n = t ? "#1C1C1C" : "white", r = t ? "white" : "black", i = At.get(e)?.(r) ?? "", a = `<svg width="94" height="44" viewBox="0 0 94 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="94" height="44" rx="8" fill="${n}"/><rect x="0.5" y="0.5" width="93" height="43" rx="7.5" stroke="${r}" stroke-opacity="${t ? .24 : .12}"/><circle cx="17" cy="15" r="7" fill="${r}" fill-opacity="${t ? .24 : .12}"/><rect x="30" y="9" width="30" height="3" rx="1.5" fill="${r}" fill-opacity="${t ? .72 : .48}"/><rect x="30" y="16" width="20" height="3" rx="1.5" fill="${r}" fill-opacity="${t ? .48 : .32}"/>${i}</svg>`;
 	return `data:image/svg+xml,${encodeURIComponent(a)}`;
-}, jt = {
+}, Mt = {
 	hours_to_show: 1,
 	tile_feature: "bar",
 	show_icon_and_title: !0,
 	show_top_links: !0,
 	show_input_source: !0,
 	max_columns: 4,
-	media_features: St,
-	audio_features: Ct
-}, Q = M.map(({ page: e }) => e), Mt = (e, t) => t === void 0 || e !== void 0 && P(e, t), Nt = (e) => new Set(Q.filter((t) => !Mt(e, $e.get(t)))), Pt = (e, t, n) => {
+	media_features: Ct,
+	audio_features: wt
+}, Z = M.map(({ page: e }) => e), Q = (e, t) => t === void 0 || e !== void 0 && P(e, t), Nt = (e) => new Set(Z.filter((t) => !Q(e, $e.get(t)))), Pt = (e, t, n) => {
 	let r = e.filter((e) => !n.has(e)), i;
 	for (let e of t) n.has(e) && r.splice(i === void 0 ? 0 : r.indexOf(i) + 1, 0, e), r.includes(e) && (i = e);
 	return r;
@@ -1341,6 +1353,7 @@ var wt = /* @__PURE__ */ new Map([
 	desktop: "Whether the session is locked, and how long it's been idle.",
 	processes: "The number of processes, with a graph.",
 	commands: "Buttons to lock, log out, sleep, hibernate, restart or shut down.",
+	notifications: "The notify entity, and the last notification event, such as clicked or closed.",
 	power: "The power profile, and a switch to keep the device awake.",
 	system: "Device power usage and whether the camera is in use."
 }, Bt = /* @__PURE__ */ new Map([
@@ -1402,7 +1415,7 @@ var wt = /* @__PURE__ */ new Map([
 }, {
 	name: "audio_options",
 	options: ["audio_features", "show_input_source"]
-}], Jt = (e) => "section" in e ? Gt.get(e.section) ?? [] : "page" in e ? Kt.get(e.page) ?? [] : Wt, Yt = (e, t) => [...Gt].some(([n, r]) => r.includes(e) && Mt(t, Ze.get(n))), Xt = (e, t) => {
+}], Jt = (e) => "section" in e ? Gt.get(e.section) ?? [] : "page" in e ? Kt.get(e.page) ?? [] : Wt, Yt = (e, t) => [...Gt].some(([n, r]) => r.includes(e) && Q(t, Ze.get(n))), Xt = (e, t) => {
 	let n = Jt(e).filter((e) => Yt(e, t));
 	return qt.flatMap(({ name: t, options: r }) => {
 		let i = r.filter((e) => n.includes(e));
@@ -1419,8 +1432,8 @@ var wt = /* @__PURE__ */ new Map([
 	});
 }, Zt = (e) => {
 	switch (e) {
-		case "media_features": return Et(bt);
-		case "audio_features": return Et(xt);
+		case "media_features": return Dt(xt);
+		case "audio_features": return Dt(St);
 		case "show_input_source": return { boolean: {} };
 	}
 }, Qt = (e, t) => e.length === t.length && e.every((e, n) => e === t[n]), $t = (e, t, n) => [
@@ -1433,7 +1446,7 @@ var wt = /* @__PURE__ */ new Map([
 		required: !0,
 		selector: { select: {
 			mode: "dropdown",
-			options: M.filter(({ page: t }) => t === e.page || Mt(n, $e.get(t))).map(({ page: e, title: t }) => ({
+			options: M.filter(({ page: t }) => t === e.page || Q(n, $e.get(t))).map(({ page: e, title: t }) => ({
 				value: e,
 				label: t
 			}))
@@ -1468,13 +1481,13 @@ var wt = /* @__PURE__ */ new Map([
 			mode: "box",
 			box_max_columns: 2,
 			sort: !0,
-			options: Object.entries(zt).flatMap(([t, r]) => mt(t) && (t === e.section || Mt(n, Ze.get(t))) ? [{
+			options: Object.entries(zt).flatMap(([t, r]) => ht(t) && (t === e.section || Q(n, Ze.get(t))) ? [{
 				value: t,
 				label: Rt(t),
 				description: r,
 				image: {
-					src: _t(t, !1),
-					src_dark: _t(t, !0)
+					src: vt(t, !1),
+					src_dark: vt(t, !0)
 				}
 			}] : [])
 		} }
@@ -1502,13 +1515,13 @@ var wt = /* @__PURE__ */ new Map([
 		selector: { select: {
 			mode: "box",
 			box_max_columns: 3,
-			options: yt.map((e) => ({
+			options: bt.map((e) => ({
 				value: e,
-				label: Dt.get(e) ?? e,
-				description: Ot.get(e),
+				label: Ot.get(e) ?? e,
+				description: kt.get(e),
 				image: {
-					src: At(e, !1),
-					src_dark: At(e, !0)
+					src: jt(e, !1),
+					src_dark: jt(e, !0)
 				}
 			}))
 		} }
@@ -1516,13 +1529,13 @@ var wt = /* @__PURE__ */ new Map([
 	...Xt(e, n)
 ], en = (e) => !("page" in e) && !("section" in e), $ = class extends D {
 	constructor(...e) {
-		super(...e), this._computeLabel = (e) => wt.get(e.name) ?? e.name, this._computeHelper = (e) => Bt.get(e.name), this._generalChanged = (e) => {
+		super(...e), this._computeLabel = (e) => Tt.get(e.name) ?? e.name, this._computeHelper = (e) => Bt.get(e.name), this._generalChanged = (e) => {
 			if (e.stopPropagation(), !this._config) return;
 			let t = {
 				...this._config,
 				...e.detail.value
 			};
-			if (t.hours_to_show === 1 && delete t.hours_to_show, t.tile_feature === "bar" && delete t.tile_feature, "show_icon_and_title" in t && t.show_icon_and_title && delete t.show_icon_and_title, "show_top_links" in t && t.show_top_links && delete t.show_top_links, "max_columns" in t && t.max_columns === 4 && delete t.max_columns, t.media_features && Qt(t.media_features, St) && delete t.media_features, t.audio_features && Qt(t.audio_features, Ct) && delete t.audio_features, t.show_input_source && delete t.show_input_source, en(t)) {
+			if (t.hours_to_show === 1 && delete t.hours_to_show, t.tile_feature === "bar" && delete t.tile_feature, "show_icon_and_title" in t && t.show_icon_and_title && delete t.show_icon_and_title, "show_top_links" in t && t.show_top_links && delete t.show_top_links, "max_columns" in t && t.max_columns === 4 && delete t.max_columns, t.media_features && Qt(t.media_features, Ct) && delete t.media_features, t.audio_features && Qt(t.audio_features, wt) && delete t.audio_features, t.show_input_source && delete t.show_input_source, en(t)) {
 				let e = en(this._config) ? this._config : void 0, n = Nt(this.hass?.config.version);
 				for (let r of [
 					"pages",
@@ -1530,10 +1543,10 @@ var wt = /* @__PURE__ */ new Map([
 					"top_links_pages"
 				]) {
 					let i = t[r];
-					i && (t[r] = Pt(i, e?.[r] ?? Q, n));
+					i && (t[r] = Pt(i, e?.[r] ?? Z, n));
 				}
-				t.pages && Qt(t.pages, Q) && delete t.pages;
-				let r = (e) => e && Qt([...e].sort(), [...Q].sort());
+				t.pages && Qt(t.pages, Z) && delete t.pages;
+				let r = (e) => e && Qt([...e].sort(), [...Z].sort());
 				r(t.icon_and_title_pages) && delete t.icon_and_title_pages, r(t.top_links_pages) && delete t.top_links_pages;
 			}
 			this._emit(t);
@@ -1569,11 +1582,11 @@ var wt = /* @__PURE__ */ new Map([
 		let e = this._config, t = this.hass?.config.version, n = Nt(t), r = (e) => e.filter((e) => !n.has(e)), i = en(e) ? Ce`<ha-form
           .hass=${this.hass}
           .data=${{
-			pages: r(e.pages ?? Q),
-			icon_and_title_pages: r(e.icon_and_title_pages ?? Q),
-			top_links_pages: r(e.top_links_pages ?? Q)
+			pages: r(e.pages ?? Z),
+			icon_and_title_pages: r(e.icon_and_title_pages ?? Z),
+			top_links_pages: r(e.top_links_pages ?? Z)
 		}}
-          .schema=${It(r(Q))}
+          .schema=${It(r(Z))}
           .computeLabel=${this._computeLabel}
           .computeHelper=${this._computeHelper}
           @value-changed=${this._generalChanged}
@@ -1582,7 +1595,7 @@ var wt = /* @__PURE__ */ new Map([
       <ha-form
         .hass=${this.hass}
         .data=${{
-			...jt,
+			...Mt,
 			...e
 		}}
         .schema=${$t(e, this._itemOptions(e), t)}
@@ -1610,21 +1623,21 @@ var wt = /* @__PURE__ */ new Map([
   `;
 	}
 };
-Z([Be({ attribute: !1 })], $.prototype, "hass", void 0), Z([Ve()], $.prototype, "_config", void 0), Z([Ve()], $.prototype, "_entities", void 0), $ = Z([O("system-bridge-strategy-editor")], $);
+X([Be({ attribute: !1 })], $.prototype, "hass", void 0), X([Ve()], $.prototype, "_config", void 0), X([Ve()], $.prototype, "_entities", void 0), $ = X([O("system-bridge-strategy-editor")], $);
 // src/section-strategy.ts
 var tn = ["entities", "devices"], nn = {
 	release: `The System Bridge dashboard needs Home Assistant ${Je} or later.`,
 	none: "No System Bridge devices found. Add the System Bridge integration first.",
 	several: "There are several System Bridge devices. Choose one in the settings.",
 	not_found: "The System Bridge device was not found. Choose another in the settings."
-}, rn = (e) => nn[e.error], an = (e, { section: t, item: n, link: r }, i) => pt[t]({
+}, rn = (e) => nn[e.error], an = (e, { section: t, item: n, link: r }, i) => mt[t]({
 	entities: e,
 	item: n,
 	link: r,
 	hours: i.hours_to_show ?? 1,
 	percentage: Ue(i.tile_feature ?? "bar"),
-	mediaFeatures: i.media_features ?? St,
-	audioFeatures: i.audio_features ?? Ct,
+	mediaFeatures: i.media_features ?? Ct,
+	audioFeatures: i.audio_features ?? wt,
 	inputSource: i.show_input_source ?? !0
 }), on = (e) => ({
 	type: "grid",
@@ -1637,7 +1650,7 @@ var tn = ["entities", "devices"], nn = {
 		this.registryDependencies = tn;
 	}
 	static async generate(e, t) {
-		if (!mt(e.section)) return on(`Unknown System Bridge section "${e.section}".`);
+		if (!ht(e.section)) return on(`Unknown System Bridge section "${e.section}".`);
 		let n = I(t, e.device_id);
 		return "error" in n ? on(rn(n)) : an(await L(t, n.device), {
 			section: e.section,
@@ -1654,13 +1667,13 @@ var tn = ["entities", "devices"], nn = {
 		for (let n of Object.values(e.entities)) n?.device_id && t.set(n.device_id, (t.get(n.device_id) ?? 0) + 1);
 		let [n] = rt(e).sort((e, n) => (t.get(n.id) ?? 0) - (t.get(e.id) ?? 0));
 		return n ? {
-			type: vt,
+			type: yt,
 			device_id: n.id,
 			section: "overview-load"
 		} : void 0;
 	}
 };
-sn = Z([O("ll-strategy-section-system-bridge")], sn);
+sn = X([O("ll-strategy-section-system-bridge")], sn);
 // src/view-strategy.ts
 var cn = (e, t, n, r = /* @__PURE__ */ new Set()) => e.sections(t).flatMap((e) => {
 	let r = an(t, e, n);
@@ -1670,7 +1683,7 @@ var cn = (e, t, n, r = /* @__PURE__ */ new Set()) => e.sections(t).flatMap((e) =
 	}] : [];
 }).map(({ ref: { link: e, ...i }, columnSpan: a }) => {
 	let o = {
-		type: vt,
+		type: yt,
 		device_id: t.device.id,
 		...i
 	};
@@ -1713,7 +1726,7 @@ var cn = (e, t, n, r = /* @__PURE__ */ new Set()) => e.sections(t).flatMap((e) =
 		return document.createElement("system-bridge-strategy-editor");
 	}
 };
-un = Z([O("ll-strategy-view-system-bridge")], un);
+un = X([O("ll-strategy-view-system-bridge")], un);
 // src/dashboard-strategy.ts
 var dn = class extends m {
 	static {
@@ -1745,7 +1758,7 @@ var dn = class extends m {
 		return document.createElement("system-bridge-strategy-editor");
 	}
 };
-dn = Z([O("ll-strategy-dashboard-system-bridge")], dn);
+dn = X([O("ll-strategy-dashboard-system-bridge")], dn);
 // src/index.ts
 var fn = "https://system-bridge.timmo.dev/using/home-assistant/#dashboard", pn = [{
 	strategyType: "dashboard",
